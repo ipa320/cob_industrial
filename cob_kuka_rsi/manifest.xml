@@ -1,0 +1,15 @@
+<package>
+  <description brief="cob_kuka_rsi">
+
+     cob_kuka_rsi
+
+  </description>
+  <author></author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/cob_kuka_rsi</url>
+  <depend package="roscpp"/>
+
+</package>
+
+
