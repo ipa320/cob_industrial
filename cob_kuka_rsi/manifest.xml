@@ -8,7 +8,14 @@
   <license>BSD</license>
   <review status="unreviewed" notes=""/>
   <url>http://ros.org/wiki/cob_kuka_rsi</url>
+
   <depend package="roscpp"/>
+  <depend package="sensor_msgs"/>
+  <depend package="trajectory_msgs"/>
+  <depend package="pr2_controllers_msgs"/>
+  <depend package="diagnostic_msgs"/>
+  <depend package="brics_actuator"/>
+  <depend package="cob_srvs"/>
 
 </package>
 

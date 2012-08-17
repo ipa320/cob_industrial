@@ -29,7 +29,9 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 #rosbuild_add_executable(example examples/example.cpp)
 #target_link_libraries(example ${PROJECT_NAME})
 
-rosbuild_add_boost_directories()
-rosbuild_add_library(${PROJECT_NAME}	src/main.cpp
-					src/RSIConnector.cpp)
-rosbuild_link_boost(${PROJECT_NAME} thread signals system)
+#rosbuild_add_boost_directories()
+#rosbuild_add_library(${PROJECT_NAME}	src/main.cpp
+#					src/RSIConnector.cpp)
+#rosbuild_link_boost(${PROJECT_NAME} thread signals system)
+
+rosbuild_add_library(${PROJECT_NAME} src/cob_kuka_rsi.cpp)
