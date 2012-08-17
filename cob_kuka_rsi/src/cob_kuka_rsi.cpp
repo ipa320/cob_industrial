@@ -114,13 +114,14 @@ public:
   /// member variables
   bool initialized_;
   bool error_;
+  std::vector<std::string> joint_names_;
 
   ///Constructor
   RSINode()
   {
   	n_ = ros::NodeHandle("~");
 
-    rsi_ctrl_ = new RSIConnector();
+    rsi_ctrl_ = new RSIConnector("192.1.10.1", 49150, true);
 
     /// implementation of topics to publish
     topicPub_JointState_ = n_.advertise<sensor_msgs::JointState> ("/joint_states", 1);
@@ -137,11 +138,18 @@ public:
     srvServer_SetOperationMode_ = n_.advertiseService("set_operation_mode", &RSINode::srvCallback_SetOperationMode, this);
 
     initialized_ = false;
+    joint_names_.push_back("arm_1_joint");
+	joint_names_.push_back("arm_2_joint");
+	joint_names_.push_back("arm_3_joint");
+	joint_names_.push_back("arm_4_joint");
+	joint_names_.push_back("arm_5_joint");
+	joint_names_.push_back("arm_6_joint");
   }
 
   /// Destructor
   ~RSINode()
   {
+	  rsi_ctrl_->stop();
 	  ROS_INFO("RSI closed!");
   }
 
@@ -179,7 +187,8 @@ public:
 		  ROS_INFO("Initializing RSI...");
 
 		  // TODO initialize RSI
-		  initialized_ = true; // TODO fill in feedback from RSI
+		  rsi_ctrl_->start();
+		  initialized_ = true;
 		res.success.data = true;
 		res.error_message.data = "text";
 	  }
@@ -249,31 +258,41 @@ public:
   {
 	  if (initialized_)
 	  {
-		  ROS_DEBUG("publish state");
+		ROS_DEBUG("publish state");
 
-		  // TODO update state from RSI
-		  // set error_
+		// TODO update state from RSI
+		// set error_
+		RSIConnector::RobotPosition pos = rsi_ctrl_->GetRobPos();
+		std::vector<double> pos_vec;
+		pos_vec.push_back(pos.A1);
+		pos_vec.push_back(pos.A2);
+		pos_vec.push_back(pos.A3);
+		pos_vec.push_back(pos.A4);
+		pos_vec.push_back(pos.A5);
+		pos_vec.push_back(pos.A6);
 
-		  sensor_msgs::JointState joint_state_msg;
-		  joint_state_msg.header.stamp = ros::Time::now();
-		  // TODO: fill in joint names joint_state_msg.name = ...
-		  // TODO: fill in positions joint_state_msg.position = ...
-		  // TODO: fill in velocities joint_state_msg.velocity = ...
+		//TODO calculate velocities
 
-		  pr2_controllers_msgs::JointTrajectoryControllerState controller_state_msg;
-		  controller_state_msg.header.stamp = joint_state_msg.header.stamp;
-		  controller_state_msg.joint_names = joint_state_msg.name;
-		  controller_state_msg.actual.positions = joint_state_msg.position;
-		  controller_state_msg.actual.velocities = joint_state_msg.velocity;
-		  //controller_state_msg.actual.accelerations = ...
+		sensor_msgs::JointState joint_state_msg;
+		joint_state_msg.header.stamp = ros::Time::now();
+		joint_state_msg.name = joint_names_;
+		joint_state_msg.position = pos_vec;
+		// TODO: fill in velocities joint_state_msg.velocity = ...
 
-		  std_msgs::String opmode_msg;
-		  opmode_msg.data = "velocity";
+		pr2_controllers_msgs::JointTrajectoryControllerState controller_state_msg;
+		controller_state_msg.header.stamp = joint_state_msg.header.stamp;
+		controller_state_msg.joint_names = joint_state_msg.name;
+		controller_state_msg.actual.positions = joint_state_msg.position;
+		controller_state_msg.actual.velocities = joint_state_msg.velocity;
+		//controller_state_msg.actual.accelerations = ...
 
-		  /// publishing joint and controller states on topic
-		  topicPub_JointState_.publish(joint_state_msg);
-		  topicPub_ControllerState_.publish(controller_state_msg);
-		  topicPub_OperationMode_.publish(opmode_msg);
+		std_msgs::String opmode_msg;
+		opmode_msg.data = "velocity";
+
+		/// publishing joint and controller states on topic
+		topicPub_JointState_.publish(joint_state_msg);
+		topicPub_ControllerState_.publish(controller_state_msg);
+		topicPub_OperationMode_.publish(opmode_msg);
 	  }
 
     // publishing diagnotic messages

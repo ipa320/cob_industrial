@@ -10,7 +10,7 @@ RSIConnector::RSIConnector( std::string own_ip, int udp_port, bool isCorrectingA
 	boost::system::error_code error;
 	_socket = new udp::socket(_io_service);
 	_socket->open(udp::v4());
-	_socket->bind(udp::endpoint(boost::asio::ip::address::from_string(ip), port), error);
+	_socket->bind(udp::endpoint(boost::asio::ip::address::from_string(own_ip), udp_port), error);
 	if (error)
 	{
 		std::cerr << "Error while binding socket: " << error.message() << std::endl;

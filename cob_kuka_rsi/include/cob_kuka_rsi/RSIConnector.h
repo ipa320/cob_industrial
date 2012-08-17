@@ -16,7 +16,7 @@ using boost::asio::ip::udp;
 
 // This parameter specifies that every x-th message is parsed and written into the variable
 // RobPosG
-#define PARSE_FREQUENCY 2
+#define PARSE_FREQUENCY 1
 
 /* Definitions & Einstellungen ENDE */
 #ifdef TIMING
