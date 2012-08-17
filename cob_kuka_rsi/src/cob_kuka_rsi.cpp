@@ -74,6 +74,9 @@
 #include <diagnostic_msgs/DiagnosticArray.h>
 #include <brics_actuator/JointVelocities.h>
 
+#include "math.h"
+#define RAD_TO_DEG(a) ((a)*180.0/M_PI)
+#define DEG_TO_RAD(a) ((a)/180.0*M_PI)
 
 // ROS service includes
 #include <cob_srvs/Trigger.h>
@@ -138,6 +141,8 @@ public:
     srvServer_SetOperationMode_ = n_.advertiseService("set_operation_mode", &RSINode::srvCallback_SetOperationMode, this);
 
     initialized_ = false;
+
+    // TODO: get joint_names from parameter server
     joint_names_.push_back("arm_1_joint");
 	joint_names_.push_back("arm_2_joint");
 	joint_names_.push_back("arm_3_joint");
@@ -168,7 +173,77 @@ public:
 			return;
 		}
 
+
 	  /// command velocities to RSI
+	  RSIConnector::AxisCorrection cor;
+
+
+	  // TODO: clean this up
+			#define MAX_VEL 0.1
+
+			cor.dA1 = RAD_TO_DEG(msg->velocities[0].value)/IPOC_HZ;
+			if(cor.dA1 > MAX_VEL)
+			{
+			 cor.dA1 = MAX_VEL;
+			}
+			else if(cor.dA1 < -MAX_VEL)
+			{
+			 cor.dA1 = -MAX_VEL;
+			}
+
+			cor.dA2 = RAD_TO_DEG(msg->velocities[1].value)/IPOC_HZ;
+			if(cor.dA2 > MAX_VEL)
+			{
+			 cor.dA2 = MAX_VEL;
+			}
+			else if(cor.dA2 < -MAX_VEL)
+			{
+			 cor.dA2 = -MAX_VEL;
+			}
+
+			cor.dA3 = RAD_TO_DEG(msg->velocities[2].value)/IPOC_HZ;
+			if(cor.dA3 > MAX_VEL)
+			{
+			 cor.dA3 = MAX_VEL;
+			}
+			else if(cor.dA3 < -MAX_VEL)
+			{
+			 cor.dA3 = -MAX_VEL;
+			}
+
+			cor.dA4 = RAD_TO_DEG(msg->velocities[3].value)/IPOC_HZ;
+			if(cor.dA4 > MAX_VEL)
+			{
+			 cor.dA4 = MAX_VEL;
+			}
+			else if(cor.dA4 < -MAX_VEL)
+			{
+			 cor.dA4 = -MAX_VEL;
+			}
+
+			cor.dA5 = RAD_TO_DEG(msg->velocities[4].value)/IPOC_HZ;
+			if(cor.dA5 > MAX_VEL)
+			{
+			 cor.dA5 = MAX_VEL;
+			}
+			else if(cor.dA5 < -MAX_VEL)
+			{
+			 cor.dA5 = -MAX_VEL;
+			}
+
+
+			cor.dA6 = RAD_TO_DEG(msg->velocities[5].value)/IPOC_HZ;
+			if(cor.dA6 > MAX_VEL)
+			{
+			 cor.dA6 = MAX_VEL;
+			}
+			else if(cor.dA6 < -MAX_VEL)
+			{
+			 cor.dA6 = -MAX_VEL;
+			}
+
+
+	  rsi_ctrl_->SetAxisCorrection(cor);
 	  // TODO
 	  // set error_
   }
@@ -264,12 +339,12 @@ public:
 		// set error_
 		RSIConnector::RobotPosition pos = rsi_ctrl_->GetRobPos();
 		std::vector<double> pos_vec;
-		pos_vec.push_back(pos.A1);
-		pos_vec.push_back(pos.A2);
-		pos_vec.push_back(pos.A3);
-		pos_vec.push_back(pos.A4);
-		pos_vec.push_back(pos.A5);
-		pos_vec.push_back(pos.A6);
+		pos_vec.push_back(DEG_TO_RAD(pos.A1));
+		pos_vec.push_back(DEG_TO_RAD(pos.A2));
+		pos_vec.push_back(DEG_TO_RAD(pos.A3));
+		pos_vec.push_back(DEG_TO_RAD(pos.A4));
+		pos_vec.push_back(DEG_TO_RAD(pos.A5));
+		pos_vec.push_back(DEG_TO_RAD(pos.A6));
 
 		//TODO calculate velocities
 

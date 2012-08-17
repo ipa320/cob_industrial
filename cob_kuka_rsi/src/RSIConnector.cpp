@@ -75,7 +75,7 @@ void RSIConnector::work()
 			boost::system::error_code error;
 
 			// Get Correction before time critical receiption of message by KUKA
-			AxisCorrection axCor = {0};
+			AxisCorrection axCor;
 			RobotCorrection robCor = {0};
 			if (_correctAxis)
 			{
@@ -199,7 +199,7 @@ RSIConnector::RobotCorrection RSIConnector::GetRobCorrection()
 
 RSIConnector::AxisCorrection RSIConnector::GetAxisCorrection()
 {
-	AxisCorrection axCor = {0};
+	AxisCorrection axCor;
 	_mutexRobCor.lock();
 	axCor = _AKorr;
 	_mutexRobCor.unlock();

@@ -17,6 +17,7 @@ using boost::asio::ip::udp;
 // This parameter specifies that every x-th message is parsed and written into the variable
 // RobPosG
 #define PARSE_FREQUENCY 1
+#define IPOC_HZ 250
 
 /* Definitions & Einstellungen ENDE */
 #ifdef TIMING
@@ -50,6 +51,14 @@ public:
 	
 	struct AxisCorrection
 	{
+		AxisCorrection()
+		:	dA1(0.0f)
+		,	dA2(0.0f)
+		,	dA3(0.0f)
+		,	dA4(0.0f)
+		,	dA5(0.0f)
+		,	dA6(0.0f)
+		{}
 		float dA1;
 		float dA2;
 		float dA3;

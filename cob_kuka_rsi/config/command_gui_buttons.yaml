@@ -1,0 +1,22 @@
+#group:
+#  group_name: <group_name>
+#  component_name: <component_name>
+#  buttons: [[button_name1,function_name1,parameter_name2,
+#    [button_name2,function_name2,parameter_name2]]
+
+group1:
+  group_name: arm settings
+  component_name: arm
+  buttons: [[stop,trigger,stop],
+    [init,trigger,init]]
+group2:
+  group_name: arm pos
+  component_name: arm
+  buttons: [[stop,trigger,stop],
+    [pos1,move,pos1],
+    [pos2,move,pos2]]
+group3:
+  group_name: arm traj
+  component_name: arm
+  buttons: [[stop,trigger,stop],
+    [pos12,move,pos12]]
