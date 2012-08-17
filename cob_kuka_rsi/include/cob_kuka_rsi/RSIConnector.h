@@ -24,13 +24,10 @@ using boost::asio::ip::udp;
 #include <ctime>
 #endif
 
-
-class RSIConnector
-{
+class RSIConnector {
 public:
 	/* Data formats */
-	struct RobotPosition
-	{
+	struct RobotPosition {
 		float A1;
 		float A2;
 		float A3;
@@ -39,8 +36,7 @@ public:
 		float A6;
 		int timestamp;
 	};
-	struct RobotCorrection
-	{
+	struct RobotCorrection {
 		float dX;
 		float dY;
 		float dZ;
@@ -48,17 +44,11 @@ public:
 		float dB;
 		float dC;
 	};
-	
-	struct AxisCorrection
-	{
-		AxisCorrection()
-		:	dA1(0.0f)
-		,	dA2(0.0f)
-		,	dA3(0.0f)
-		,	dA4(0.0f)
-		,	dA5(0.0f)
-		,	dA6(0.0f)
-		{}
+
+	struct AxisCorrection {
+		AxisCorrection() :
+			dA1(0.0f), dA2(0.0f), dA3(0.0f), dA4(0.0f), dA5(0.0f), dA6(0.0f) {
+		}
 		float dA1;
 		float dA2;
 		float dA3;
@@ -68,7 +58,7 @@ public:
 	};
 
 public:
-	RSIConnector(std::string ip, int port, bool correctAxis=true);
+	RSIConnector(std::string ip, int port, bool correctAxis = true);
 	~RSIConnector(void);
 	void start();
 	void stop();
@@ -80,7 +70,7 @@ public:
 
 private:
 	void SetRobPos(const RobotPosition&);
-	RobotCorrection GetRobCorrection();	
+	RobotCorrection GetRobCorrection();
 	AxisCorrection GetAxisCorrection();
 
 private:

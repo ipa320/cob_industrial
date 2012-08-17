@@ -1,3 +1,6 @@
+# RSI settings
+ip: 192.1.10.1
+port: 49150
 frequency: 50
 
 # trajectory controller settings

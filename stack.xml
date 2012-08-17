@@ -1,9 +1,10 @@
 <stack>
   <description brief="cob_industrial">cob_industrial</description>
-  <author>Maintained by fmw</author>
-  <license>BSD</license>  
+  <author>Maintained by Florian Weisshardt</author>
+  <license>LGPL</license>  
   <review status="unreviewed" notes=""/>
   <url>http://ros.org/wiki/cob_industrial</url>
+  <depend stack="cob_command_tools" /> <!-- cob_script_server -->
   <depend stack="cob_common" /> <!-- brics_actuator, cob_srvs -->
   <depend stack="common_msgs" /> <!-- trajectory_msgs, sensor_msgs, diagnostic_msgs -->
   <depend stack="pr2_controllers" /> <!-- pr2_controllers_msgs -->
