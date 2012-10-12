@@ -1,0 +1,15 @@
+<package>
+  <description brief="cob_silia">
+
+     cob_silia
+
+  </description>
+  <author></author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/cob_silia</url>
+  <depend package="cob_kuka_rsi"/>
+
+</package>
+
+

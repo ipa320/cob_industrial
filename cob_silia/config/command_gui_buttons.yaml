@@ -1,0 +1,31 @@
+#group:
+#  group_name: <group_name>
+#  component_name: <component_name>
+#  buttons: [[button_name1,function_name1,parameter_name2,
+#    [button_name2,function_name2,parameter_name2]]
+
+group1:
+  group_name: arm settings
+  component_name: arm
+  buttons: [[stop,trigger,stop],
+    [init,trigger,init]]
+group2:
+  group_name: arm pos
+  component_name: arm
+  buttons: [[stop,trigger,stop],
+    [home,move,home],
+    [pickup1,move,pickup1],
+    [pickup2,move,pickup2],
+    [pickup3,move,pickup3],
+    [inter1,move,intermediate1],
+    [inter2,move,intermediate2],
+    [drop4,move,drop4],
+    [drop3,move,drop3],
+    [drop2,move,drop2],
+    [drop1,move,drop1]]
+group3:
+  group_name: arm traj
+  component_name: arm
+  buttons: [[stop,trigger,stop],
+    [pickup,move,pickup],
+    [drop,move,drop]]

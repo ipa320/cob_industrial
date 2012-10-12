@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+
+	<!-- start ik_solver for arm -->
+	<node pkg="cob_silia_ik" type="cob_ik_solver_kdl" name="cob_ik_solver" ns="/arm_kinematics" cwd="node" respawn="false" output="screen"/>
+
+</launch>
