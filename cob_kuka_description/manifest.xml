@@ -4,8 +4,8 @@
      cob_kuka_description
 
   </description>
-  <author></author>
-  <license>BSD</license>
+  <author>Florian Weisshardt</author>
+  <license>LGPL</license>
   <review status="unreviewed" notes=""/>
   <url>http://ros.org/wiki/cob_kuka_description</url>
 
