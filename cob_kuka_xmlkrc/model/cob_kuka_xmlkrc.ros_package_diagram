@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<notation:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:ros="http://ros/1.0" xmi:id="_yLnkMDkyEeKs09JK9TQA8Q" type="RosPackage" name="cob_kuka_xmlkrc.ros_package_diagram" measurementUnit="Pixel">
+  <children xmi:type="notation:Shape" xmi:id="_yy4_kDkyEeKs09JK9TQA8Q" type="2001" fontName="Ubuntu">
+    <children xmi:type="notation:DecorationNode" xmi:id="_yy5moDkyEeKs09JK9TQA8Q" type="5008"/>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_yy6NsDkyEeKs09JK9TQA8Q" type="7001">
+      <children xmi:type="notation:Node" xmi:id="_4XVfkDkyEeKs09JK9TQA8Q" type="3001">
+        <element xmi:type="ros:Parameter" href="cob_kuka_xmlkrc.ros_package#//@node.0/@parameter.0"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_4XWGoDkyEeKs09JK9TQA8Q"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_90hhADkyEeKs09JK9TQA8Q" type="3001">
+        <element xmi:type="ros:Parameter" href="cob_kuka_xmlkrc.ros_package#//@node.0/@parameter.1"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_90hhATkyEeKs09JK9TQA8Q"/>
+      </children>
+      <styles xmi:type="notation:TitleStyle" xmi:id="_yy6NsTkyEeKs09JK9TQA8Q" showTitle="true"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_yy6NsjkyEeKs09JK9TQA8Q"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_yy6NszkyEeKs09JK9TQA8Q"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_BR6N4DkzEeKs09JK9TQA8Q" type="3004">
+      <children xmi:type="notation:DecorationNode" xmi:id="_BR608DkzEeKs09JK9TQA8Q" type="5004"/>
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_BR6N4TkzEeKs09JK9TQA8Q"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_BR6N4jkzEeKs09JK9TQA8Q" fontName="Ubuntu"/>
+      <styles xmi:type="notation:LineStyle" xmi:id="_BR6N4zkzEeKs09JK9TQA8Q"/>
+      <element xmi:type="ros:Publisher" href="cob_kuka_xmlkrc.ros_package#//@node.0/@publisher.0"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_BR6N5DkzEeKs09JK9TQA8Q"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_C5YiADkzEeKs09JK9TQA8Q" type="3004">
+      <children xmi:type="notation:DecorationNode" xmi:id="_C5ZJEDkzEeKs09JK9TQA8Q" type="5004"/>
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_C5YiATkzEeKs09JK9TQA8Q"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_C5YiAjkzEeKs09JK9TQA8Q" fontName="Ubuntu"/>
+      <styles xmi:type="notation:LineStyle" xmi:id="_C5YiAzkzEeKs09JK9TQA8Q"/>
+      <element xmi:type="ros:Publisher" href="cob_kuka_xmlkrc.ros_package#//@node.0/@publisher.1"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_C5YiBDkzEeKs09JK9TQA8Q"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_VeHogDkzEeKs09JK9TQA8Q" type="3002">
+      <children xmi:type="notation:DecorationNode" xmi:id="_VeIPkDkzEeKs09JK9TQA8Q" type="5002"/>
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_VeHogTkzEeKs09JK9TQA8Q"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_VeHogjkzEeKs09JK9TQA8Q" fontName="Ubuntu"/>
+      <styles xmi:type="notation:LineStyle" xmi:id="_VeHogzkzEeKs09JK9TQA8Q"/>
+      <element xmi:type="ros:ServiceServer" href="cob_kuka_xmlkrc.ros_package#//@node.0/@serviceServer.0"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_VeHohDkzEeKs09JK9TQA8Q" x="-39" y="72"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_XDHQYDkzEeKs09JK9TQA8Q" type="3002">
+      <children xmi:type="notation:DecorationNode" xmi:id="_XDH3cDkzEeKs09JK9TQA8Q" type="5002"/>
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_XDHQYTkzEeKs09JK9TQA8Q"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_XDHQYjkzEeKs09JK9TQA8Q" fontName="Ubuntu"/>
+      <styles xmi:type="notation:LineStyle" xmi:id="_XDHQYzkzEeKs09JK9TQA8Q"/>
+      <element xmi:type="ros:ServiceServer" href="cob_kuka_xmlkrc.ros_package#//@node.0/@serviceServer.1"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_XDHQZDkzEeKs09JK9TQA8Q" x="-84" y="132"/>
+    </children>
+    <element xmi:type="ros:Node" href="cob_kuka_xmlkrc.ros_package#//@node.0"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_yy4_kTkyEeKs09JK9TQA8Q" x="288" y="120" width="361" height="301"/>
+  </children>
+  <styles xmi:type="notation:DiagramStyle" xmi:id="_yLnkMTkyEeKs09JK9TQA8Q"/>
+  <element xmi:type="ros:Package" href="cob_kuka_xmlkrc.ros_package#/"/>
+</notation:Diagram>
