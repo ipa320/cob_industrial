@@ -1,0 +1,32 @@
+<ETHERNETKRL>
+	<CONFIGURATION>
+		<EXTERNAL>
+			<TYPE>Client</TYPE>
+			<IP>172.31.1.1</IP>
+			<PORT>49152</PORT>
+		</EXTERNAL>
+		<INTERNAL>
+			<IP>"172.31.1.147"</IP>
+			<PORT>49152</PORT>
+			<ALIVE Set_Flag="2"/>
+		</INTERNAL>
+	</CONFIGURATION>
+	<SEND>
+		<XML>
+			<ELEMENT Tag="Robot/SubID" Type="INT" />
+			<ELEMENT Tag="Robot/MsgID" Type="INT" />
+			<ELEMENT Tag="Robot/ConfirmTag" Type="INT" />
+			<ELEMENT Tag="Robot/CurPos" Type="FRAME" />
+		</XML>
+	</SEND>
+	<RECEIVE>
+		<XML>
+			<ELEMENT Tag="Ext/SubID" Type="INT" />
+			<ELEMENT Tag="Ext/MsgID" Type="INT" />
+			<ELEMENT Tag="Ext/Param1" Type="INT" />
+			<ELEMENT Tag="Ext/Param2" Type="INT" />
+			<ELEMENT Tag="Ext/Frame" Type="Frame" />
+			<ELEMENT Tag="Ext" Set_Flag="999" /> <!-- Definition für callback in KRL, für PC Seite ignorieren -->
+		</XML>
+	</RECEIVE>
+</ETHERNETKRL>
