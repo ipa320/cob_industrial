@@ -7,6 +7,17 @@
 #include <cob_kuka_xmlkrc/KukaEthernetClient.h>
 
 /* protected region user include files on begin */
+int currentMsgID;
+	clock_t start, finish;
+   void testCallback(int msgID)
+    {
+    	std::cout << "Called back with MsgID: " << msgID << std::endl;
+    	if (msgID == currentMsgID)
+    	{
+    		finish = clock();
+    		cout << "Time needed:" << ( (finish - start)/CLOCKS_PER_SEC ) << endl;
+    	}
+    }
 /* protected region user include files end */
 
 class cob_kuka_xmlkrc_config
@@ -46,7 +57,9 @@ public:
     void configure(cob_kuka_xmlkrc_config config) 
     {
         /* protected region user configure on begin */
-    	std::cout << config.KRC_ip_port << "\n";
+    	std::cout << "Connecting to KUKA KRC on " << config.KRC_ip_address << ":" << config.KRC_ip_port << "\n";
+    	kuka_client_.Initialize("common/files/EKIServerFrame.xml", SocketAddress(config.KRC_ip_address, config.KRC_ip_port));
+    	kuka_client_.setCallbackFcn(testCallback);
 		/* protected region user configure end */
     }
     void update(cob_kuka_xmlkrc_data &data, cob_kuka_xmlkrc_config config)
@@ -55,10 +68,12 @@ public:
 		/* protected region user update end */
     }
 
+
 	bool callback_Init(cob_srvs::Trigger::Request  &req, cob_srvs::Trigger::Response &res , cob_kuka_xmlkrc_config config)
 	{
 		/* protected region user implementation of service callback for Init on begin */
 		std::cout << config.KRC_ip_port << "\n";
+
 		/* protected region user implementation of service callback for Init end */
 		return true;
 	}

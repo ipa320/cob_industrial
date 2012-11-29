@@ -1,5 +1,4 @@
 #pragma once
-#include "loggingHelper.h"
 #include <string>
 #include <iostream>
 #include <sstream>
@@ -14,7 +13,7 @@ using namespace boost;
 using namespace std;
 
 
-class XmlStringHandler : Loggable
+class XmlStringHandler
 {
 public:
 

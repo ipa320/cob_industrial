@@ -1,14 +1,12 @@
 #pragma once
-#include "loggingHelper.h"
 #include "Poco/Net/SocketAddress.h"
 #include "StringEthernetClient.h"
 #include "XmlStringHandler.h"
 
 #include "Poco/Mutex.h"
-#include "Poco\Condition.h"
+#include "Poco/Condition.h"
 #include <boost/shared_ptr.hpp>
 
-#include "MRKZelle.h"
 #include "KukaAxis.h"
 
 namespace confirmationTag
@@ -40,11 +38,11 @@ public:
 typedef boost::shared_ptr<StringEthernetClient> StringEthernetClientPtr;
 typedef boost::shared_ptr<XmlStringHandler> XmlStringHandlerPtr;	
 
-class KukaEthernetClient : Loggable
+class KukaEthernetClient
 {
 	//typedef boost::shared_ptr<KukaEthernetClient> KukaEthernetClientPtr;
 
-	class SenderRunnable : Loggable, public Poco::Runnable
+	class SenderRunnable: public Poco::Runnable
 	{
 	private:
 		KukaEthernetClient* _parent;
@@ -105,17 +103,10 @@ public:
 	void addMessage(int msgID, SubID::subIDs subID, int param1, int param2, bool flush = false);
 	void addMessage(int msgID, SubID::subIDs subID, int param1, int param2, KukaAxis axis, KukaFrame frame, float linVel, float axVel, bool flush = false);
 
-	void testCell(int msgID, int posU, int posG, MRKZelle::Area coopArea);
-	void stackCell(int msgID, int posG, int posZ, MRKZelle::Area coopArea);
-	void testAndStackCell(int msgID, int posU, int posZ, MRKZelle::Area coopArea);
-	void placePackage(int msgID, MRKZelle::Area coopArea);
-	void delieverBattery(int msgID, int posP, MRKZelle::Area coopArea);
-	void switchA_B(int msgID);
-	void switchB_A(int msgID);
+
 	void flushBuffer(int msgID);
 	void pauseMsg(int msgID);
 	void resumeMsg(int msgID);
-	void dummyPoser(int msgID, MRKZelle::Area coopArea);
 
 	void movePTP(int msgID, KukaAxis axis, float vel);
 	void movePTP(int msgID, float a1, float a2, float a3, float a4, float a5, float a6, float vel);

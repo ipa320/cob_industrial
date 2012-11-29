@@ -1,11 +1,12 @@
 #define SENDING_SLEEPING_TIME_MS 1000
-
+#define NO_LOG_AVAILABLE
 #pragma once
-#include "KukaEthernetClient.h"
-#include "XmlDefines.h"
+#include <cob_kuka_xmlkrc/KukaEthernetClient.h>
+#include <cob_kuka_xmlkrc/XmlDefines.h>
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
 #include <functional>
+#include <cstdio>
 #include "boost/lexical_cast.hpp"
 
 
@@ -169,7 +170,7 @@ int KukaEthernetClient::messageCallBack(std::string data)
 	if(!parsingError)
 	{
 		_messageMutex.lock();
-		if (checkRepliedMsgID(messageID, _messageActiveList))	// messageID wurde gefunden und vom Kuka durchgeführt
+		if (checkRepliedMsgID(messageID, _messageActiveList))	// messageID wurde gefunden und vom Kuka durchgefï¿½hrt
 		{
 			_messageDoneList.push_back(*_messageActiveList.begin());
 			_messageActiveList.pop_front();
@@ -319,10 +320,10 @@ bool KukaEthernetClient::Initialize(std::string pathKrlEthernet, const SocketAdd
 	boost::function<int (std::string)> f3( boost::bind( &KukaEthernetClient::messageCallBack, this, _1 ) );
 	_ethernetClient->setCallbackFcn(f3);
 
-	logs.debug() << "Connecting KukaEthernetClient" << endl;
+	std::cout << "Connecting KukaEthernetClient" << endl;
 	_isConnected = _ethernetClient->connect(sa);
 
-	logs.debug() << "Initializing XmlStringHandler" << endl;
+	std::cout << "Initializing XmlStringHandler" << endl;
 	_isXMLInit = !_xmlHandler->initAll(pathKrlEthernet);
 	return (_isConnected && _isXMLInit);
 }
@@ -509,174 +510,34 @@ void KukaEthernetClient::addMessage(int msgID, SubID::subIDs subID, bool flush)
 }
 
 
-//********************** specialized messages SILIA ****************************//
-void KukaEthernetClient::testCell(int msgID, int posU, int posG, MRKZelle::Area coopArea)
-{
-	if (coopArea == MRKZelle::Area_A)
-	{
-		addMessage(msgID, SubID::subIDs::TestCell_A, posU, posG);
-	}
-	else if (coopArea == MRKZelle::Area_B) 
-	{
-		addMessage(msgID, SubID::subIDs::TestCell_B, posU, posG);// (msgID, 20, posU, posG);
-	}
-	else
-	{
-#ifdef NO_LOG_AVAILABLE
-		std::cout << "Unknown CoopArea ID: " << coopArea;
-#else
-		logs.error() << "Unknown CoopArea ID: " << coopArea;
-#endif
-		return;
-	}
-}
 
-void KukaEthernetClient::stackCell(int msgID, int posG, int posZ, MRKZelle::Area coopArea)
-{	
-	if (coopArea == MRKZelle::Area_A)
-	{
-		addMessage(msgID, SubID::subIDs::StackCell_A, posG, posZ);
-	}
-	else if (coopArea == MRKZelle::Area_B) 
-	{
-		addMessage(msgID,  SubID::subIDs::StackCell_B, posG, posZ);
-	}
-	else
-	{
-#ifdef NO_LOG_AVAILABLE
-		std::cout << "Unknown CoopArea ID: " << coopArea;
-#else
-		logs.error() << "Unknown CoopArea ID: " << coopArea;
-#endif
-		return;
-	}
-}
-
-void KukaEthernetClient::testAndStackCell(int msgID, int posU, int posZ, MRKZelle::Area coopArea)
-{	
-	if (coopArea == MRKZelle::Area_A)
-	{
-		addMessage(msgID, SubID::subIDs::TestAndStack_A, posU, posZ);
-	}
-	else if (coopArea == MRKZelle::Area_B) 
-	{
-		addMessage(msgID,  SubID::subIDs::TestAndStack_B, posU, posZ);
-	}
-	else
-	{
-#ifdef NO_LOG_AVAILABLE
-		std::cout << "Unknown CoopArea ID: " << coopArea;
-#else
-		logs.error() << "Unknown CoopArea ID: " << coopArea;
-#endif
-		return;
-	}
-}
-
-void KukaEthernetClient::placePackage(int msgID, MRKZelle::Area coopArea)
-{
-	if (coopArea == MRKZelle::Area_A)
-	{
-		addMessage(msgID,  SubID::subIDs::PlacePackage_A);
-	}
-	else if (coopArea == MRKZelle::Area_B) 
-	{
-		addMessage(msgID,  SubID::subIDs::PlacePackage_B);
-	}
-	else
-	{
-#ifdef NO_LOG_AVAILABLE
-		std::cout << "Unknown CoopArea ID: " << coopArea;
-#else
-		logs.error() << "Unknown CoopArea ID: " << coopArea;
-#endif
-		return;
-	}
-}
-
-void KukaEthernetClient::delieverBattery(int msgID, int posP, MRKZelle::Area coopArea)
-{
-	if (coopArea == MRKZelle::Area_A)
-	{
-		addMessage(msgID,  SubID::subIDs::DelieverBattery_A, posP);
-	}
-	else if (coopArea == MRKZelle::Area_B) 
-	{
-		addMessage(msgID, SubID::subIDs::DelieverBattery_B, posP);
-	}
-	else
-	{
-#ifdef NO_LOG_AVAILABLE
-		std::cout << "Unknown CoopArea ID: " << coopArea;
-#else
-		logs.error() << "Unknown CoopArea ID: " << coopArea;
-#endif
-		return;
-	}
-}
-
-void KukaEthernetClient::switchA_B(int msgID)
-{
-	addMessage(msgID, SubID::subIDs::SwitchFromAtoB); // SubID = 30
-}
-
-void KukaEthernetClient::switchB_A(int msgID)
-{
-	addMessage(msgID, SubID::subIDs::SwitchFromBtoA); // SubId = 40
-}
-
-void KukaEthernetClient::flushBuffer(int msgID)
-{
-	addMessage(msgID,  SubID::subIDs::FlushBuffer, true);
-}
-
-void KukaEthernetClient::dummyPoser(int msgID, MRKZelle::Area coopArea)
-{
-	if (coopArea == MRKZelle::Area_A)
-	{
-		addMessage(msgID,  SubID::subIDs::Pose_A);
-	}
-	else if (coopArea == MRKZelle::Area_B) 
-	{
-		addMessage(msgID, SubID::subIDs::Pose_B);
-	}
-	else
-	{
-#ifdef NO_LOG_AVAILABLE
-		std::cout << "Unknown CoopArea ID: " << coopArea;
-#else
-		logs.error() << "Unknown CoopArea ID: " << coopArea;
-#endif
-		return;
-	}
-}
 
 //******************************************************************************//
 
 void KukaEthernetClient::movePTP(int msgID, float a1, float a2, float a3, float a4, float a5, float a6, float vel)
 {
 	KukaAxis axis(a1, a2, a3, a4, a5, a6); 
-	addMessage(msgID, SubID::subIDs::MovePTP_AXIS, axis, false);
+	addMessage(msgID, SubID::MovePTP_AXIS, axis, false);
 }
 
 void KukaEthernetClient::movePTP(int msgID, KukaAxis axis, float vel)
 {
 	if (vel > 100.0)
 	{
-		logs.warning() << "Axis Movement Speed adjusted higher than 100%; Value truncated to 90%" << endl;
+		std::cout << "Axis Movement Speed adjusted higher than 100%; Value truncated to 90%" << endl;
 		vel = 90.0;
 	}
-	addMessage(msgID, SubID::subIDs::MovePTP_AXIS, axis, vel, false);
+	addMessage(msgID, SubID::MovePTP_AXIS, axis, vel, false);
 }
 
 void KukaEthernetClient::moveLIN(int msgID, KukaFrame frame, float vel)
 {
 	if (vel > 2.0)
 	{
-		logs.warning() << "Linear Movement Speed adjusted higher than 2m/s; Value truncated to 1.9m/s" << endl;
+		std::cout << "Linear Movement Speed adjusted higher than 2m/s; Value truncated to 1.9m/s" << endl;
 		vel = 1.9;
 	}
-	addMessage(msgID, SubID::subIDs::MoveLIN_FRAME, frame, vel, false);
+	addMessage(msgID, SubID::MoveLIN_FRAME, frame, vel, false);
 }
 
 void KukaEthernetClient::pauseMsg( int msgID )

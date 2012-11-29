@@ -1,5 +1,7 @@
-#include "KukaAxis.h"
+#include <cob_kuka_xmlkrc/KukaAxis.h>
 #include "Poco/StringTokenizer.h"
+#include <cstdio>
+#include <cstring>
 
 using Poco::StringTokenizer;
 using namespace std;

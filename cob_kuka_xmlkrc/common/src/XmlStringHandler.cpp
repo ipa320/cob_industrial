@@ -1,4 +1,5 @@
-#include "XmlStringHandler.h"
+#include <cob_kuka_xmlkrc/XmlStringHandler.h>
+#include <cstdio>
 #define OUTPUT true
 XmlStringHandler::XmlStringHandler(void)
 {
@@ -77,7 +78,7 @@ int XmlStringHandler::setDataToRobot(string key, string value)
 	iterator=_sendStructure.find(key.data());
 	if (iterator==_sendStructure.end())
 	{
-		logs.error() << "Cannot find Value @ "<< key << " in DataToRobot structure" << endl;
+		std::cout << "Cannot find Value @ "<< key << " in DataToRobot structure" << endl;
 		return -1;
 	}
 	else 
@@ -103,7 +104,7 @@ int XmlStringHandler::setDataToRobot(string key, const KukaAxis& value)
 	iterator=_sendStructure.find(key.data());
 	if (iterator==_sendStructure.end())
 	{
-		logs.error() << "Cannot find Value  "<< key << " in DataToRobot structure" << endl;
+		std::cout << "Cannot find Value  "<< key << " in DataToRobot structure" << endl;
 		return -1;
 	}
 	else 
@@ -138,7 +139,7 @@ int XmlStringHandler::setDataToRobot(string key, const KukaFrame& value)
 	iterator=_sendStructure.find(key.data());
 	if (iterator==_sendStructure.end())
 	{
-		logs.error() << "Cannot find Value  "<< key << " in DataToRobot structure" << endl;
+		std::cout << "Cannot find Value  "<< key << " in DataToRobot structure" << endl;
 		return -1;
 	}
 	else 
@@ -174,7 +175,7 @@ string XmlStringHandler::getDataToRobotValueType(string key, int &error)
 	iterator = _sendStructure.find(key.data());
 	if (iterator == _sendStructure.end())
 	{
-		logs.error() << "Cannot find ValueType @ "<< key << " in DataToRobot structure" << endl;
+		std::cout << "Cannot find ValueType @ "<< key << " in DataToRobot structure" << endl;
 		error = -1;
 	}
 	else
@@ -219,7 +220,7 @@ KukaFrame XmlStringHandler::getFrameFromRobot(string key, int &error)
 	float x,y,z,a,b,c;
 	string value = "";
 
-// Typenkontrolle übergangen weil KUKA kein wirklichen Typ führt
+// Typenkontrolle ï¿½bergangen weil KUKA kein wirklichen Typ fï¿½hrt
 /*
 	if (!getDataFromRobotValueType(key, parsingError).compare("FRAME"))
 	{
@@ -250,7 +251,7 @@ KukaAxis XmlStringHandler::getAxisFromRobot(string key, int &error)
 	float a1, a2, a3, a4, a5, a6;
 	string value = "";
 
-// Typenkontrolle übergangen weil KUKA kein wirklichen Typ führt
+// Typenkontrolle ï¿½bergangen weil KUKA kein wirklichen Typ fï¿½hrt
 /*
 	if (!getDataFromRobotValueType(key, parsingError).compare("FRAME"))
 	{
@@ -306,7 +307,7 @@ string XmlStringHandler::getDataToRobotValue(string key, int &error)
 	iterator=_dataToRobot.find(key.data());
 	if (iterator==_dataToRobot.end())
 	{
-		logs.error() << "Cannot find Value @ "<< key << " in DataToRobot" << endl;
+		std::cout << "Cannot find Value @ "<< key << " in DataToRobot" << endl;
 		error = -1;
 	}
 	else
@@ -325,7 +326,7 @@ string XmlStringHandler::getDataFromRobotValueType(string key, int &error)
 	iterator=_receiveStructure.find(key.data());
 	if (iterator==_receiveStructure.end())
 	{
-		logs.error() << "Cannot find ValueType @ "<< key << " in DataFromRobot structure" << endl;
+		std::cout << "Cannot find ValueType @ "<< key << " in DataFromRobot structure" << endl;
 		error = -1;
 	}
 	else
@@ -343,7 +344,7 @@ string XmlStringHandler::getDataFromRobotValue(string key, int &error)
 	iterator=_dataFromRobot.find(key.data());
 	if (iterator==_dataFromRobot.end())
 	{
-		logs.error() << "Cannot find Value @ "<< key << " in DataFromRobot" << endl;
+		std::cout << "Cannot find Value @ "<< key << " in DataFromRobot" << endl;
 		error = -1;
 	}
 	else
@@ -364,7 +365,7 @@ string XmlStringHandler::getAttributeFromRobotValue(string key, string attr, int
 	iterator=_dataFromRobot.find(key.data());
 	if (iterator==_dataFromRobot.end())
 	{
-		logs.error() << "Cannot find Value @ "<< key << " in DataFromRobot" << endl;
+		std::cout << "Cannot find Value @ "<< key << " in DataFromRobot" << endl;
 		error = -1;
 	}
 	else
@@ -383,7 +384,7 @@ int XmlStringHandler::initAll(string filePath)
 	string Value;
 	if (!doc.load_file(filePath.c_str()))
 	{
-		logs.error() << "Cannot find file: " << filePath << endl;;
+		std::cout << "Cannot find file: " << filePath << endl;;
 		return -1;
 	}
 	//selecting send (from KUKA point of view)

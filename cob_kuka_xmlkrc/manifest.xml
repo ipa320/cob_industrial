@@ -12,6 +12,7 @@
   	<depend package="sensor_msgs"/>
   /* protected region additional manifest statements on begin */
   <depend package="cob_srvs"/>
+  <rosdep name="libpoco"/>
   /* protected region additional manifest statements end */
   
   

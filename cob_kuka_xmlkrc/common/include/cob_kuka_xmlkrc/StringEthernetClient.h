@@ -1,5 +1,4 @@
 #pragma once
-#include "loggingHelper.h"
 #include "Poco/Net/SocketAddress.h"
 #include "Poco/Net/StreamSocket.h"
 
@@ -15,12 +14,12 @@ using namespace Poco::Net;
 using namespace std;
 using Poco::Thread;
 
-class StringEthernetClient : Loggable
+class StringEthernetClient
 {
 	typedef boost::shared_ptr<StreamSocket> StreamSocketPtr;
 	typedef boost::function<int (std::string)> CallbackFunctionPtr;
 	
-	class WorkerRunnable : Loggable, public Poco::Runnable
+	class WorkerRunnable : public Poco::Runnable
 	{
 	private:
 		enum

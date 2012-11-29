@@ -1,5 +1,3 @@
-#include "MRKZelle.h"
-
 #define TAG_RECV_MSG_ID "Robot/MsgID"
 #define TAG_RECV_CONFIRM "Robot/ConfirmTag"
 #define TAG_RECV_SUB_ID "Robot/SubID"

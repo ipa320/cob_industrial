@@ -1,4 +1,6 @@
-#include "KukaFrame.h"
+#include <cob_kuka_xmlkrc/KukaFrame.h>
+#include <cstdio>
+#include <cstring>
 
 KukaFrame::KukaFrame(void)
 {

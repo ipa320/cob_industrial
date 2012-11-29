@@ -41,4 +41,7 @@ INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/common/src)
 rosbuild_add_executable(cob_kuka_xmlkrc ros/src/cob_kuka_xmlkrc_ros.cpp) 
 
 # protected region user Cmake macros on begin #
+rosbuild_add_library(pugixml_lib common/src/pugixml.cpp)
+rosbuild_add_library(KukaEthernetClient_lib common/src/KukaEthernetClient.cpp common/src/KukaAxis.cpp common/src/KukaFrame.cpp common/src/StringEthernetClient.cpp common/src/XmlStringHandler.cpp)
+target_link_libraries(cob_kuka_xmlkrc KukaEthernetClient_lib pugixml_lib PocoNet)
 # protected region user Cmake macros end #

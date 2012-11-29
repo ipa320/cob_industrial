@@ -1,4 +1,4 @@
-#include "StringEthernetClient.h"
+#include <cob_kuka_xmlkrc/StringEthernetClient.h>
 
 //********** Worker *************//
 StringEthernetClient::WorkerRunnable::WorkerRunnable(const SocketAddress& sa):
@@ -16,7 +16,7 @@ StringEthernetClient::WorkerRunnable::WorkerRunnable(const SocketAddress& sa):
 	}
 	catch (...)
 	{
-		logs.error() << "Cannot connect to TCP server" << endl;
+		std::cout << "Cannot connect to TCP server" << endl;
 	}
 
 }
@@ -51,7 +51,7 @@ void StringEthernetClient::WorkerRunnable::stop()
 
 void StringEthernetClient::WorkerRunnable::reconnect()
 {
-	logs.warning() << "Trying to reconnect..." << endl;
+	std::cout << "Trying to reconnect..." << endl;
 	_socket->close();
 	_isConnected = false;
 	try
@@ -61,7 +61,7 @@ void StringEthernetClient::WorkerRunnable::reconnect()
 	}
 	catch (...)
 	{
-		logs.error() << "Cannot connect to TCP server" << endl;
+		std::cout << "Cannot connect to TCP server" << endl;
 		Poco::Thread::sleep(500);
 	}
 }	
@@ -88,7 +88,7 @@ void StringEthernetClient::WorkerRunnable::run()
 	{
 		if (!_isConnected)
 		{
-			logs.warning() << "Communication error" << endl;
+			std::cout << "Communication error" << endl;
 			Poco::Thread::sleep(500);
 			reconnect();
 		}
@@ -125,13 +125,13 @@ void StringEthernetClient::WorkerRunnable::run()
 			}
 			catch (...)
 			{
-				logs.warning() << "Communication error" << endl;
+				std::cout << "Communication error" << endl;
 				//reconnect();
 			}
 		} 
 		else
 		{
-			logs.warning() << "Communication error" << endl;
+			std::cout << "Communication error" << endl;
 			//reconnect();
 		}
 	}
