@@ -1,4 +1,6 @@
 #include <cob_kuka_xmlkrc/StringEthernetClient.h>
+#include <cstdio>
+#include <iostream>
 
 //********** Worker *************//
 StringEthernetClient::WorkerRunnable::WorkerRunnable(const SocketAddress& sa):
@@ -16,7 +18,7 @@ StringEthernetClient::WorkerRunnable::WorkerRunnable(const SocketAddress& sa):
 	}
 	catch (...)
 	{
-		std::cout << "Cannot connect to TCP server" << endl;
+		std::cout << "Cannot connect to TCP server" << std::endl;
 	}
 
 }
@@ -51,7 +53,7 @@ void StringEthernetClient::WorkerRunnable::stop()
 
 void StringEthernetClient::WorkerRunnable::reconnect()
 {
-	std::cout << "Trying to reconnect..." << endl;
+	std::cout << "Trying to reconnect..." << std::endl;
 	_socket->close();
 	_isConnected = false;
 	try
@@ -61,7 +63,7 @@ void StringEthernetClient::WorkerRunnable::reconnect()
 	}
 	catch (...)
 	{
-		std::cout << "Cannot connect to TCP server" << endl;
+		std::cout << "Cannot connect to TCP server" << std::endl;
 		Poco::Thread::sleep(500);
 	}
 }	
@@ -88,7 +90,7 @@ void StringEthernetClient::WorkerRunnable::run()
 	{
 		if (!_isConnected)
 		{
-			std::cout << "Communication error" << endl;
+			std::cout << "Communication error" << std::endl;
 			Poco::Thread::sleep(500);
 			reconnect();
 		}
@@ -125,13 +127,13 @@ void StringEthernetClient::WorkerRunnable::run()
 			}
 			catch (...)
 			{
-				std::cout << "Communication error" << endl;
+				std::cout << "Communication error" << std::endl;
 				//reconnect();
 			}
 		} 
 		else
 		{
-			std::cout << "Communication error" << endl;
+			std::cout << "Communication error" << std::endl;
 			//reconnect();
 		}
 	}

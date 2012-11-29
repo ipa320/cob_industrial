@@ -16,7 +16,18 @@
 			<ELEMENT Tag="Robot/SubID" Type="INT" />
 			<ELEMENT Tag="Robot/MsgID" Type="INT" />
 			<ELEMENT Tag="Robot/ConfirmTag" Type="INT" />
-			<ELEMENT Tag="Robot/CurPos" Type="FRAME" />
+			<ELEMENT Tag="Robot/CurPos" Type="FRAME"/>
+			<ELEMENT Tag="Robot/CurPos/@X"/>
+			<ELEMENT Tag="Robot/CurPos/@Y"/>
+			<ELEMENT Tag="Robot/CurPos/@Z"/>
+			<ELEMENT Tag="Robot/CurPos/@A"/>
+			<ELEMENT Tag="Robot/CurPos/@B"/>
+			<ELEMENT Tag="Robot/CurPos/@C"/>
+			<ELEMENT Tag="Robot/Slot1" Type="INT" />
+			<ELEMENT Tag="Robot/Slot2" Type="INT" />
+			<ELEMENT Tag="Robot/Slot3" Type="INT" />
+			<ELEMENT Tag="Robot/RunPointer" Type="INT" />
+			<ELEMENT Tag="Robot/RecvPointer" Type="INT" />
 		</XML>
 	</SEND>
 	<RECEIVE>
@@ -26,7 +37,16 @@
 			<ELEMENT Tag="Ext/Param1" Type="INT" />
 			<ELEMENT Tag="Ext/Param2" Type="INT" />
 			<ELEMENT Tag="Ext/Frame" Type="Frame" />
-			<ELEMENT Tag="Ext" Set_Flag="999" /> <!-- Definition für callback in KRL, für PC Seite ignorieren -->
+			<ELEMENT Tag="Ext/Axis" />
+			<ELEMENT Tag="Ext/Axis/@A1" Type="REAL"/>
+			<ELEMENT Tag="Ext/Axis/@A2" Type="REAL"/>
+			<ELEMENT Tag="Ext/Axis/@A3" Type="REAL"/>
+			<ELEMENT Tag="Ext/Axis/@A4" Type="REAL"/>
+			<ELEMENT Tag="Ext/Axis/@A5" Type="REAL"/>
+			<ELEMENT Tag="Ext/Axis/@A6" Type="REAL"/>
+			<ELEMENT Tag="Ext/LinVel" Type="REAL"/>
+			<ELEMENT Tag="Ext/AxVel" Type="REAL"/>
+			<ELEMENT Tag="Ext" Set_Flag="999" />
 		</XML>
 	</RECEIVE>
 </ETHERNETKRL>

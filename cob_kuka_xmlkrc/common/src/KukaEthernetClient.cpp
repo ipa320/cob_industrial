@@ -81,7 +81,7 @@ KukaEthernetClient::KukaEthernetClient()
 	_senderWorker.reset(new SenderRunnable(this));
 	_workerThread->start(*_senderWorker);
 
-	_messageMutex.unlock();
+	//_messageMutex.unlock();
 }
 
 KukaEthernetClient::~KukaEthernetClient()
@@ -157,6 +157,10 @@ int KukaEthernetClient::messageCallBack(std::string data)
 	slot[0] = _xmlHandler->getIntFromRobot(TAG_RECV_SLOT1, parsingError);
 	slot[1] = _xmlHandler->getIntFromRobot(TAG_RECV_SLOT2, parsingError);
 	slot[2] = _xmlHandler->getIntFromRobot(TAG_RECV_SLOT3, parsingError);
+
+	KukaFrame myframe;
+	myframe = _xmlHandler->getFrameFromRobot("Robot/CurPos", parsingError);
+	setCurrentFrame(myframe);
 
 	if (!checkSync(&slot[0], 3, recvPointer, runPointer))
 	{
@@ -571,4 +575,17 @@ KukaEthernetClient::commandMessage KukaEthernetClient::createNewCommandMessage( 
 	commandMsg.message = _xmlHandler->createDataToRobotXml();
 
 	return commandMsg;
+}
+
+KukaFrame KukaEthernetClient::getCurrentFrame()
+{
+	_frameMutex.lock();
+	return currentFrame;
+	_frameMutex.unlock();
+}
+void KukaEthernetClient::setCurrentFrame(KukaFrame frame)
+{
+	_frameMutex.lock();
+	currentFrame = frame;
+	_frameMutex.unlock();
 }

@@ -88,6 +88,9 @@ public:
 	StringEthernetClientPtr getEthernetClient();
 	XmlStringHandlerPtr getXmlhandler();
 
+	KukaFrame getCurrentFrame();
+	void setCurrentFrame(KukaFrame frame);
+
 	void pause();
 	void start();
 
@@ -113,6 +116,8 @@ public:
 	void moveLIN(int msgID, KukaFrame frame, float vel);
 
 private:
+
+	KukaFrame currentFrame;
 	int messageCallBack(std::string data);
 	void sendNextMessage();
 	bool checkRepliedMsgID(int msgID, list<commandMessage>& list);
@@ -134,6 +139,7 @@ private:
 
 	Poco::Condition _listPendingNotEmptyCondition;
 	Poco::Mutex				_messageMutex;
+	Poco::Mutex	_frameMutex;
 
 	int						_activeMessages;
 	list<commandMessage>	_messageActiveList;
