@@ -32,6 +32,7 @@ void RSIConnector::parseXML() {
 	try {
 		_mutexStringParser.lock();
 		RobotPosition robPos;
+		std::cout << "Hello" << _dataFromRobot.c_str() << std::endl;
 		sscanf(
 				_dataFromRobot.c_str(),
 				"<Rob Type=\"KUKA\"><AIPos A1=\"%f\" A2=\"%f\" A3=\"%f\" A4=\"%f\" A5=\"%f\" A6=\"%f\"/><IPOC>%d</IPOC></Rob>",
@@ -82,12 +83,14 @@ void RSIConnector::work() {
 			}
 
 			//Receive message by KUKA RSI
+			std::cout << "H" << std::endl;
 			std::ostringstream conv;
 			_socket->receive_from(boost::asio::buffer(recv_buf),
 					remote_endpoint, 0, error);
 
 			// Convert to member string stream
 			conv << recv_buf.data();
+			std::cout << conv.str() << std::endl;
 			// Lock conversion because parser Thread (from last cycle) might work with it
 			_mutexStringParser.lock();
 			_dataFromRobot = conv.str();
