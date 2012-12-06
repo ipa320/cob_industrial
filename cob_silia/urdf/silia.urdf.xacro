@@ -8,11 +8,12 @@
   <!-- common stuff -->
   <include filename="$(find cob_description)/urdf/common.xacro" />
   <include filename="$(find cob_kuka_description)/urdf/materials.urdf.xacro" />
+  <include filename="$(find cob_description)/gazebo/gazebo.urdf.xacro" />
 
 	<!-- arm mount positions | relative to base_link -->
 	<property name="arm_x" value="0"/>
 	<property name="arm_y" value="0"/>
-	<property name="arm_z" value="0"/>
+	<property name="arm_z" value="0.6"/>
 	<property name="arm_roll" value="0"/>
 	<property name="arm_pitch" value="0"/>
 	<property name="arm_yaw" value="0"/>
@@ -32,7 +33,7 @@
 	<link name="base_link">
 		<inertial>
 			<origin xyz="0 0 0" rpy="0 0 0"/>
-			<mass value="1.0"/>
+			<mass value="100.0"/>
 			<inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01" />
 		</inertial>
 		<visual>
@@ -51,12 +52,38 @@
   
 	<!-- workcell -->
 	<joint name="stack_joint" type="fixed">
-		<origin xyz="1 0.5 0" rpy="0 0 ${M_PI/4}"/>
+		<origin xyz="0 0 0.6" rpy="0 0 ${-3*M_PI/4}"/>
 			<parent link="base_link"/>
 			<child link="stack_link"/>
 		</joint>
-     <link name="stack_link"/>
-  
+		<link name="stack_link">
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="100"/>
+				<inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01" />
+			</inertial>
+
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0" />
+				<geometry>
+					<!--cylinder radius="0.060" length="0.30"/-->
+					<mesh filename="package://cob_kuka_description/meshes/kr16/stack.stl" />
+				</geometry>
+				<material name="Grey" />
+			</visual>
+
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0" />
+				<geometry>
+					<mesh filename="package://cob_kuka_description/meshes/kr16/stack.stl" />
+				</geometry>
+			</collision>
+		</link>
+        <gazebo reference="stack_link">
+                <material>Gazebo/Grey</material>
+                <turnGravityOff>false</turnGravityOff>
+        </gazebo>
+
   <!-- composition of the robot -->
   <xacro:cob_kr16 name="arm" parent="base_link">
     <origin xyz="${arm_x} ${arm_y} ${arm_z}" rpy="${arm_roll} ${arm_pitch} ${arm_yaw}" />

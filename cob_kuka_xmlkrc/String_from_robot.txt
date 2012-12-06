@@ -1,0 +1,17 @@
+Sending for Cart Movement:
+<?xml version="1.0"?>
+<Ext>
+	<AxVel>0.000000</AxVel>
+	<Axis A1="0.000000" A2="0.000000" A3="0.000000" A4="0.000000" A5="0.000000" A6="0.000000"></Axis>
+	<Frame A="170.000000" B="1.000000" C="179.000000" X="735.000000" Y="177.000000" Z="443.000000"></Frame>
+	<LinVel>0.500000</LinVel>
+	<MsgID>5</MsgID>
+	<Param1>0</Param1>
+	<Param2>0</Param2>
+	<SubID>201</SubID>
+</Ext>
+
+
+
+Receiving:
+<Robot><ConfirmTag>20</ConfirmTag><CurPos A="179.015015"  B="2.944807"  C="-179.427063"  X="367.172211"  Y="153.384811"  Z="649.095947" ></CurPos><MsgID>0</MsgID><RecvPointer>2</RecvPointer><RunPointer>1</RunPointer><Slot1>0</Slot1><Slot2>-1</Slot2><Slot3>-1</Slot3><SubID>66</SubID></Robot>
