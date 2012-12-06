@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ros:Package xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ros="http://ros/1.0" name="cob_kuka_xmlkrc" author="Alexander Bubeck" description="ROS interface for KUKA Ethernet KRC XML protocol">
+  <node name="cob_kuka_xmlkrc" loopRate="0.1">
+    <publisher name="joint_states" msg="sensor_msgs::JointState"/>
+    <publisher name="cart_pose" msg="geometry_msgs::PoseStamped"/>
+    <serviceServer name="Init" msg="cob_srvs::Trigger"/>
+    <serviceServer name="MoveLin_BL" msg="cob_srvs::Trigger"/>
+    <parameter name="KRC_ip_address" value="127.0.0.1" type="string"/>
+    <parameter name="KRC_ip_port" value="4444"/>
+  </node>
+  <depend>geometry_msgs</depend>
+  <depend>sensor_msgs</depend>
+</ros:Package>
