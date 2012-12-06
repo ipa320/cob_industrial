@@ -1,0 +1,14 @@
+<package>
+  <description brief="kuka_controller_configuration_gazebo">
+
+     kuka_controller_configuration_gazebo
+
+  </description>
+  <author></author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/kuka_controller_configuration_gazebo</url>
+
+</package>
+
+

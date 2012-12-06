@@ -41,6 +41,26 @@
   <material name="RollLinks">
     <texture filename="package://pr2_ogre/Media/materials/textures/pr2_wheel_left.png"/>
   </material>
+  <gazebo>
+    <controller:gazebo_ros_controller_manager name="gazebo_ros_controller_manager" plugin="libgazebo_ros_controller_manager.so">
+      <alwaysOn>true</alwaysOn>
+      <updateRate>1000.0</updateRate>
+      <interface:audio name="gazebo_ros_controller_manager_dummy_iface"/>
+    </controller:gazebo_ros_controller_manager>
+    <controller:gazebo_ros_power_monitor name="gazebo_ros_power_monitor_controller" plugin="libgazebo_ros_power_monitor.so">
+      <alwaysOn>true</alwaysOn>
+      <updateRate>1.0</updateRate>
+      <timeout>5</timeout>
+      <interface:audio name="power_monitor_dummy_interface"/>
+      <powerStateTopic>power_state</powerStateTopic>
+      <powerStateRate>10.0</powerStateRate>
+      <fullChargeCapacity>87.78</fullChargeCapacity>
+      <dischargeRate>-474</dischargeRate>
+      <chargeRate>525</chargeRate>
+      <dischargeVoltage>15.52</dischargeVoltage>
+      <chargeVoltage>16.41</chargeVoltage>
+    </controller:gazebo_ros_power_monitor>
+  </gazebo>
   <!-- arm mount positions | relative to base_link -->
   <!-- arm reference positions | used as calibration_rising for arm chain-->
   <!-- arm -->
@@ -65,14 +85,38 @@
   </link>
   <!-- workcell -->
   <joint name="stack_joint" type="fixed">
-    <origin rpy="0 0 0.785398163397" xyz="1 0.5 0"/>
+    <origin rpy="0 0 3.14159265359" xyz="0 0 0.6"/>
     <parent link="base_link"/>
     <child link="stack_link"/>
   </joint>
-  <link name="stack_link"/>
+  <link name="stack_link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="20"/>
+      <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <!--cylinder radius="0.060" length="0.30"/-->
+        <mesh filename="package://cob_kuka_description/meshes/kr16/stack.stl"/>
+      </geometry>
+      <material name="Grey"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://cob_kuka_description/meshes/kr16/stack.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <gazebo reference="stack_link">
+    <material>Gazebo/Grey</material>
+    <turnGravityOff>false</turnGravityOff>
+  </gazebo>
   <!-- composition of the robot -->
   <joint name="arm_0_joint" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <origin rpy="0 0 0" xyz="0 0 0.6"/>
     <parent link="base_link"/>
     <child link="arm_0_link"/>
   </joint>
@@ -93,7 +137,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <box size="0.01 0.01 0.01"/>
+        <mesh filename="package://cob_kuka_description/meshes/kr16/joint_0.stl"/>
       </geometry>
     </collision>
   </link>
@@ -118,15 +162,13 @@
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
         <mesh filename="package://cob_kuka_description/meshes/kr16/joint_1.stl"/>
-        <!--cylinder radius="0.060" length="0.30"/-->
       </geometry>
       <material name="Orange"/>
     </visual>
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <!--mesh filename="package://cob_kuka_description/meshes/kr16/joint_1_collision.stl" /-->
-        <cylinder length="0.30" radius="0.060"/>
+        <mesh filename="package://cob_kuka_description/meshes/kr16/joint_1.stl"/>
       </geometry>
     </collision>
   </link>
@@ -151,15 +193,13 @@
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
         <mesh filename="package://cob_kuka_description/meshes/kr16/joint_2.stl"/>
-        <cylinder length="0.30" radius="0.060"/>
       </geometry>
       <material name="Black"/>
     </visual>
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <!--mesh filename="package://cob_kuka_description/meshes/kr16/joint_2_collision.stl"/-->
-        <cylinder length="0.30" radius="0.060"/>
+        <mesh filename="package://cob_kuka_description/meshes/kr16/joint_2.stl"/>
       </geometry>
     </collision>
   </link>
@@ -176,7 +216,6 @@
   <link name="arm_3_link">
     <inertial>
       <origin rpy="0 0 0" xyz="0 0 0"/>
-      <!--mass value="4.214668"/-->
       <mass value="2.0"/>
       <inertia ixx="0.03" ixy="0" ixz="0" iyy="0.03" iyz="0" izz="0.03"/>
     </inertial>
@@ -184,15 +223,14 @@
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
         <mesh filename="package://cob_kuka_description/meshes/kr16/joint_3.stl"/>
-        <!--cylinder radius="0.060" length="0.30"/-->
       </geometry>
       <material name="Orange"/>
     </visual>
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <!--mesh filename="package://cob_kuka_description/meshes/kr16/joint_3_collision.stl"/-->
-        <cylinder length="0.30" radius="0.060"/>
+        <mesh filename="package://cob_kuka_description/meshes/kr16/joint_3.stl"/>
+        <!--box size="0.01 0.01 0.01"/-->
       </geometry>
     </collision>
   </link>
@@ -204,13 +242,11 @@
     <calibration rising="0.0"/>
     <dynamics damping="5"/>
     <limit effort="100" lower="-2.0943" upper="2.0943" velocity="1.9634"/>
-    <!--limit effort="176" velocity="0.4189" upper="2.0943951" lower="-2.0943951"/-->
     <safety_controller k_position="20" k_velocity="25" soft_lower_limit="-2.0843" soft_upper_limit="2.0843"/>
   </joint>
   <link name="arm_4_link">
     <inertial>
       <origin rpy="0 0 0" xyz="0 0 0"/>
-      <!--mass value="3.669819"/-->
       <mass value="2.0"/>
       <inertia ixx="0.03" ixy="0" ixz="0" iyy="0.03" iyz="0" izz="0.03"/>
     </inertial>
@@ -218,15 +254,13 @@
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
         <mesh filename="package://cob_kuka_description/meshes/kr16/joint_4.stl"/>
-        <!--cylinder radius="0.060" length="0.30"/-->
       </geometry>
       <material name="Black"/>
     </visual>
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <!--mesh filename="package://cob_kuka_description/meshes/kr16/joint_4_collision.stl"/-->
-        <cylinder length="0.30" radius="0.060"/>
+        <mesh filename="package://cob_kuka_description/meshes/kr16/joint_4.stl"/>
       </geometry>
     </collision>
   </link>
@@ -250,28 +284,24 @@
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
         <mesh filename="package://cob_kuka_description/meshes/kr16/joint_5.stl"/>
-        <!--cylinder radius="0.060" length="0.30"/-->
       </geometry>
       <material name="Orange"/>
     </visual>
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <!--mesh filename="package://cob_kuka_description/meshes/kr16/joint_5_collision.stl"/-->
-        <cylinder length="0.30" radius="0.060"/>
+        <mesh filename="package://cob_kuka_description/meshes/kr16/joint_5.stl"/>
       </geometry>
     </collision>
   </link>
   <joint name="arm_6_joint" type="revolute">
     <origin rpy="0 -1.57079632679 0" xyz="0.158 0 -0.1"/>
-    <!--origin xyz="0.115 0 0" rpy="0 -${M_PI/2} 0" /-->
     <parent link="arm_5_link"/>
     <child link="arm_6_link"/>
     <axis xyz="0 0 1"/>
     <calibration rising="0.0"/>
     <dynamics damping="5"/>
     <limit effort="30" lower="-2.0943951" upper="2.0943951" velocity="1.9634"/>
-    <!--limit effort="20.1" velocity="0.4363" upper="2.0943951" lower="-2.0943951" /-->
     <safety_controller k_position="20" k_velocity="25" soft_lower_limit="-2.0843951" soft_upper_limit="2.0843951"/>
   </joint>
   <link name="arm_6_link">
@@ -284,19 +314,73 @@
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
         <mesh filename="package://cob_kuka_description/meshes/kr16/joint_6.stl"/>
-        <!--cylinder radius="0.060" length="0.30"/-->
       </geometry>
       <material name="Black"/>
     </visual>
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <!--mesh filename="package://cob_kuka_description/meshes/kr16/joint_6_collision.stl"/-->
-        <cylinder length="0.30" radius="0.060"/>
+        <mesh filename="package://cob_kuka_description/meshes/kr16/joint_6.stl"/>
       </geometry>
     </collision>
   </link>
-  <xacro:cob_kr16_gazebo name="arm"/>
-  <xacro:cob_kr16_transmission name="arm"/>
+  <gazebo reference="arm_0_link">
+    <material value="PR2/Red"/>
+    <turnGravityOff>false</turnGravityOff>
+  </gazebo>
+  <gazebo reference="arm_1_link">
+    <material value="PR2/Blue"/>
+    <turnGravityOff>false</turnGravityOff>
+  </gazebo>
+  <gazebo reference="arm_2_link">
+    <material value="PR2/Red"/>
+    <turnGravityOff>false</turnGravityOff>
+  </gazebo>
+  <gazebo reference="arm_3_link">
+    <material value="PR2/Blue"/>
+    <turnGravityOff>false</turnGravityOff>
+  </gazebo>
+  <gazebo reference="arm_4_link">
+    <material value="PR2/Red"/>
+    <turnGravityOff>false</turnGravityOff>
+  </gazebo>
+  <gazebo reference="arm_5_link">
+    <material value="PR2/Blue"/>
+    <turnGravityOff>false</turnGravityOff>
+  </gazebo>
+  <gazebo reference="arm_6_link">
+    <material value="PR2/Red"/>
+    <turnGravityOff>false</turnGravityOff>
+  </gazebo>
+  <transmission name="arm_1_trans" type="pr2_mechanism_model/SimpleTransmission">
+    <actuator name="arm_1_motor"/>
+    <joint name="arm_1_joint"/>
+    <mechanicalReduction>1</mechanicalReduction>
+  </transmission>
+  <transmission name="arm_2_trans" type="pr2_mechanism_model/SimpleTransmission">
+    <actuator name="arm_2_motor"/>
+    <joint name="arm_2_joint"/>
+    <mechanicalReduction>1</mechanicalReduction>
+  </transmission>
+  <transmission name="arm_3_trans" type="pr2_mechanism_model/SimpleTransmission">
+    <actuator name="arm_3_motor"/>
+    <joint name="arm_3_joint"/>
+    <mechanicalReduction>1</mechanicalReduction>
+  </transmission>
+  <transmission name="arm_4_trans" type="pr2_mechanism_model/SimpleTransmission">
+    <actuator name="arm_4_motor"/>
+    <joint name="arm_4_joint"/>
+    <mechanicalReduction>1</mechanicalReduction>
+  </transmission>
+  <transmission name="arm_5_trans" type="pr2_mechanism_model/SimpleTransmission">
+    <actuator name="arm_5_motor"/>
+    <joint name="arm_5_joint"/>
+    <mechanicalReduction>1</mechanicalReduction>
+  </transmission>
+  <transmission name="arm_6_trans" type="pr2_mechanism_model/SimpleTransmission">
+    <actuator name="arm_6_motor"/>
+    <joint name="arm_6_joint"/>
+    <mechanicalReduction>1</mechanicalReduction>
+  </transmission>
 </robot>
 
