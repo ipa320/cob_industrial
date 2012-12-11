@@ -1,0 +1,8 @@
+\subsubsection usage Usage
+\verbatim
+<node name="cob_kuka_xmlkrc" pkg="cob_kuka_xmlkrc" type="cob_kuka_xmlkrc">
+  <param name="KRC_ip_address" type="str" value="127.0.0.1" />
+  <param name="KRC_ip_port" type="int" value="4444" />
+</node>
+\endverbatim
+
