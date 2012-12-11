@@ -27,6 +27,35 @@
 	<property name="arm_6_ref" value="0.0"/>
 	<property name="arm_7_ref" value="0.0"/>
 
+  <!-- Cameras -->
+   <link name="head_cam3d_link" >
+       <visual>
+      	<geometry>
+        	<box size="0.1 0.2 0.05"/>
+      	</geometry>
+      	<origin xyz="1.485 0.285 3.05" rpy="1.57 -0.64577 1.57" />
+       </visual>
+   </link>
+   
+   <joint name="kinect_1_joint" type="fixed">
+   	<parent link="base_link" /> 
+   	<child link="head_cam3d_link" />    	
+   </joint>
+   
+   <link name="kinect_2_link" >
+       <visual>
+      	<geometry>
+        	<box size="0.1 0.2 0.05"/>
+      	</geometry>
+      	<origin xyz="-0.285 -1.485 3.05" rpy="1.57 0.64577 0" />
+       </visual>
+   </link>
+   
+   <joint name="kinect_2_joint" type="fixed">
+   	<parent link="base_link" /> 
+   	<child link="kinect_2_link" />    	
+   </joint>
+    
   <!-- arm -->
   <include filename="$(find cob_kuka_description)/urdf/kr16/kr16.urdf.xacro" />
   
@@ -52,7 +81,7 @@
   
 	<!-- workcell -->
 	<joint name="stack_joint" type="fixed">
-		<origin xyz="0 0 0.6" rpy="0 0 ${-3*M_PI/4}"/>
+		<origin xyz="0 0 0.6" rpy="0 0 ${-4*M_PI/4}"/>
 			<parent link="base_link"/>
 			<child link="stack_link"/>
 		</joint>
