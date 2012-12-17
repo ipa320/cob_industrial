@@ -6,12 +6,13 @@ int main()
 {
 	std::cout << "About to start... please press ENTER" << std::endl;
 	getchar();
-	RSIConnector connector("192.1.10.1", 49150, true);
+	RSIConnector connector(true);
+	connector.connect("192.1.10.1", 49150);
 	connector.start();
 
 	std::cout << "About to turn ax6... please press ENTER" << std::endl;
 	getchar();
-	RSIConnector::AxisCorrection axisCor = {0};
+	RSIConnector::AxisCorrection axisCor;
 	axisCor.dA6 = 0.01f;
 	connector.SetAxisCorrection(axisCor);
 	
