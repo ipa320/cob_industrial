@@ -1,0 +1,21 @@
+<package>
+  <description brief="cob_kuka_xmlkrc">ROS interface for KUKA Ethernet KRC XML protocol</description>
+  <author>Alexander Bubeck</author>
+  <license></license>
+  <review status="unreviewed" notes=""/>
+  <url></url>
+  <depend package="roscpp"/>
+  <depend package="std_msgs"/>
+  <depend package="rospy"/>
+  <depend package="dynamic_reconfigure"/>
+  	<depend package="geometry_msgs"/>
+  	<depend package="sensor_msgs"/>
+  /* protected region additional manifest statements on begin */
+  <depend package="cob_srvs"/>
+  <rosdep name="libpoco-dev"/>
+  /* protected region additional manifest statements end */
+  
+  
+</package>
+
+

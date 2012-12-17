@@ -58,26 +58,59 @@
 
 
 import roslib
-roslib.load_manifest('cob_kuka_rsi')
+roslib.load_manifest('cob_silia')
 import rospy
+import sys
 
 from math import *
 import copy
+import tf
 
 from simple_script_server import *
 sss = simple_script_server()
 
+def callIKSolver(current_pose, goal_pose):
+	req = GetPositionIKRequest()
+	req.ik_request.ik_link_name = "arm_6_link"
+	req.ik_request.ik_seed_state.joint_state.position = current_pose
+	req.ik_request.pose_stamped = goal_pose
+	resp = iks(req)
+	result = []
+	for o in resp.solution.joint_state.position:
+		result.append(o)
+	return (result, resp.error_code)
 
 if __name__ == "__main__":
 	rospy.init_node("test")
-	sss.move("arm","pos1")
-	sss.move("arm","pos2")
-				
-				
-			
+	iks = rospy.ServiceProxy('/arm_kinematics/get_ik', GetPositionIK)
+#	sss.move("arm","pos1")
+	object_pose_bl = PoseStamped()
+	object_pose_bl.header.stamp = rospy.Time.now()
+	object_pose_bl.header.frame_id = "stack_link"
+	object_pose_bl.pose.position.x = -0.384
+	object_pose_bl.pose.position.y = 0.185
+	object_pose_bl.pose.position.z = 1.106
+	[new_x, new_y, new_z, new_w] = tf.transformations.quaternion_from_euler(0, 0, 1.414) # rpy 
+	object_pose_bl.pose.orientation.x = new_x
+	object_pose_bl.pose.orientation.y = new_y
+	object_pose_bl.pose.orientation.z = new_z
+	object_pose_bl.pose.orientation.w = new_w
 
-			
-			
-		
-		
+	# calculate ik solutions for pre grasp configuration
+	arm_home = rospy.get_param("/script_server/arm/home")
+	(arm_conf, error_code) = callIKSolver(arm_home[0], object_pose_bl)
+	if(error_code.val != error_code.SUCCESS):
+		rospy.logerr("Ik failed")
+		sys.exit()
 
+#	object_pose_bl2 = copy.deepcopy(object_pose_bl)
+#	object_pose_bl2.pose.position.y = -0.440
+#	(arm_conf2, error_code) = callIKSolver(arm_home[0], object_pose_bl2)
+#	if(error_code.val != error_code.SUCCESS):
+#		rospy.logerr("Ik failed")
+#		sys.exit()
+
+#	handle_arm = sss.move("arm", [arm_conf,"intermediate1","intermediate2",arm_conf2])
+	handle_arm = sss.move("arm", [arm_conf])
+	
+	

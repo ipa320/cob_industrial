@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- send kr16 urdf to param server -->
+    <param name="robot_description" command="$(find xacro)/xacro.py '$(find cob_silia)/urdf/silia.urdf.xacro'" />
+
+	<!-- upload joint configuration -->
+	<rosparam command="load" ns="/script_server/arm" file="$(find cob_silia)/config/arm_joint_configurations.yaml"/>
+
+	<!-- start robot_state_publisher -->
+	<node pkg="robot_state_publisher" type="state_publisher" name="robot_state_publisher"/>
+
+	<node name="arm_controller" pkg="cob_kuka_rsi" type="cob_kuka_rsi" respawn="false" output="screen" >
+		<rosparam command="load" file="$(find cob_silia)/config/rsi.yaml"/>
+	</node>
+	<node ns="arm_controller" name="joint_trajectory_controller" pkg="cob_trajectory_controller" type="cob_trajectory_controller" cwd="node" respawn="false" output="screen" />
+
+</launch>

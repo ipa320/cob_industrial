@@ -1,0 +1,21 @@
+<package>
+  <description brief="cob_silia">
+
+     cob_silia
+
+  </description>
+  <author>Florian Weisshardt</author>
+  <license>LGPL</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/cob_silia</url>
+  <depend package="cob_kuka_rsi"/>
+
+  <depend package="ogre_tools"/>
+  <depend package="gazebo"/>
+  <depend package="gazebo_tools"/>
+  <depend package="gazebo_plugins"/>
+
+
+</package>
+
+

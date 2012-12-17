@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<launch>
+
+
+    <!-- upload joint configuration -->
+    <include file="$(find cob_silia)/launch/upload_joint_config.launch" />
+
+	<!-- launch an empty world -->
+	<include file="$(find cob_gazebo_worlds)/launch/empty-world.launch" />
+
+
+    <param name="robot_description" command="$(find xacro)/xacro.py '$(find cob_silia)/urdf/silia.urdf.xacro'" />
+
+
+	<!-- push robot_description to factory and spawn robot in gazebo -->
+	<node name="spawn_gazebo_model" pkg="gazebo" type="spawn_model" args="-urdf -param robot_description -model silia -z 0.1 " respawn="false" output="screen" />
+
+
+	<!-- kr16 controllers -->
+	<include file="$(find kuka_controller_configuration_gazebo)/ros/launch/kr16_controller.launch" />
+	
+	
+	<!-- controller manager -->
+	<include file="$(find cob_controller_configuration_gazebo)/ros/launch/controller_manager.launch" />
+
+</launch>
