@@ -8,7 +8,12 @@
   <license>LGPL</license>
   <review status="unreviewed" notes=""/>
   <url>http://ros.org/wiki/cob_silia_ik</url>
-  <depend package="cob_manipulator"/>
+  <depend package="roscpp"/>
+  <depend package="kinematics_msgs"/>
+  <depend package="geometry_msgs"/>
+  <depend package="tf_conversions"/>
+  <depend package="kdl"/>
+  <depend package="kdl_parser"/>
 
 </package>
 
