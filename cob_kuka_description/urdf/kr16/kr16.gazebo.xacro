@@ -8,7 +8,7 @@
 	<xacro:macro name="kr16_gazebo" params="name">
 
 		<gazebo reference="${name}_0_link">
-			<material value="Gazebo/Black" />
+			<material value="IPA/Black" />
 			<turnGravityOff>false</turnGravityOff>
 		</gazebo>
 
@@ -18,7 +18,7 @@
 		</gazebo>
 	
 		<gazebo reference="${name}_2_link">
-			<material value="Gazebo/Black" />
+			<material value="IPA/Black" />
 			<turnGravityOff>false</turnGravityOff>
 		</gazebo>
 	
@@ -28,7 +28,7 @@
 		</gazebo>
 	
 		<gazebo reference="${name}_4_link">
-			<material value="Gazebo/Black" />
+			<material value="IPA/Black" />
 			<turnGravityOff>false</turnGravityOff>
 		</gazebo>
 
@@ -38,14 +38,10 @@
 		</gazebo>
 
 		<gazebo reference="${name}_6_link">
-			<material value="Gazebo/Black" />
+			<material value="IPA/Black" />
 			<turnGravityOff>false</turnGravityOff>
 		</gazebo>
 
-		<gazebo reference="${name}_7_link">
-			<material value="IPA/Orange" />
-			<turnGravityOff>false</turnGravityOff>
-		</gazebo>
 
 	</xacro:macro>
 

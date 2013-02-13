@@ -63,37 +63,11 @@
   </gazebo>
   <!-- arm mount positions | relative to base_link -->
   <!-- arm reference positions | used as calibration_rising for arm chain-->
-  <!-- Cameras -->
-  <link name="head_cam3d_link">
-    <visual>
-      <geometry>
-        <box size="0.1 0.2 0.05"/>
-      </geometry>
-      <origin rpy="1.57 -0.64577 1.57" xyz="1.485 0.285 3.05"/>
-    </visual>
-  </link>
-  <joint name="kinect_1_joint" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0 0.6"/>
-    <parent link="base_link"/>
-    <child link="head_cam3d_link"/>
-  </joint>
-  <link name="kinect_2_link">
-    <visual>
-      <geometry>
-        <box size="0.1 0.2 0.05"/>
-      </geometry>
-      <origin rpy="1.57 0.64577 0" xyz="-0.285 -1.485 3.05"/>
-    </visual>
-  </link>
-  <joint name="kinect_2_joint" type="fixed">
-    <parent link="base_link"/>
-    <child link="kinect_2_link"/>
-  </joint>
   <!-- arm -->
   <link name="base_link">
     <inertial>
       <origin rpy="0 0 0" xyz="0 0 0"/>
-      <mass value="100.0"/>
+      <mass value="1.0"/>
       <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
     </inertial>
     <visual>
@@ -111,14 +85,14 @@
   </link>
   <!-- workcell -->
   <joint name="stack_joint" type="fixed">
-    <origin rpy="0 0 -3.14159265359" xyz="0 0 0.6"/>
+    <origin rpy="0 0 3.14159265359" xyz="0 0 0.6"/>
     <parent link="base_link"/>
     <child link="stack_link"/>
   </joint>
   <link name="stack_link">
     <inertial>
       <origin rpy="0 0 0" xyz="0 0 0"/>
-      <mass value="100"/>
+      <mass value="20"/>
       <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
     </inertial>
     <visual>
@@ -149,7 +123,7 @@
   <link name="arm_0_link">
     <inertial>
       <origin rpy="0 0 0" xyz="0 0 0"/>
-      <mass value="2"/>
+      <mass value="1.0"/>
       <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
     </inertial>
     <visual>
@@ -181,7 +155,7 @@
     <inertial>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <!--mass value="5.9907"/-->
-      <mass value="2"/>
+      <mass value="2.0"/>
       <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
     </inertial>
     <visual>
@@ -211,7 +185,8 @@
   <link name="arm_2_link">
     <inertial>
       <origin rpy="0 0 0" xyz="0 0 0"/>
-      <mass value="2"/>
+      <!--mass value="5.734939"/-->
+      <mass value="2.0"/>
       <inertia ixx="0.03" ixy="0" ixz="0" iyy="0.03" iyz="0" izz="0.03"/>
     </inertial>
     <visual>
@@ -241,7 +216,7 @@
   <link name="arm_3_link">
     <inertial>
       <origin rpy="0 0 0" xyz="0 0 0"/>
-      <mass value="2"/>
+      <mass value="2.0"/>
       <inertia ixx="0.03" ixy="0" ixz="0" iyy="0.03" iyz="0" izz="0.03"/>
     </inertial>
     <visual>
@@ -255,6 +230,7 @@
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
         <mesh filename="package://cob_kuka_description/meshes/kr16/joint_3.stl"/>
+        <!--box size="0.01 0.01 0.01"/-->
       </geometry>
     </collision>
   </link>
@@ -271,7 +247,7 @@
   <link name="arm_4_link">
     <inertial>
       <origin rpy="0 0 0" xyz="0 0 0"/>
-      <mass value="2"/>
+      <mass value="2.0"/>
       <inertia ixx="0.03" ixy="0" ixz="0" iyy="0.03" iyz="0" izz="0.03"/>
     </inertial>
     <visual>
@@ -301,7 +277,7 @@
   <link name="arm_5_link">
     <inertial>
       <origin rpy="0 0 0" xyz="0 0 0"/>
-      <mass value="2"/>
+      <mass value="2.313272"/>
       <inertia ixx="0.03" ixy="0" ixz="0" iyy="0.03" iyz="0" izz="0.03"/>
     </inertial>
     <visual>
@@ -331,7 +307,7 @@
   <link name="arm_6_link">
     <inertial>
       <origin rpy="0 0 0" xyz="0 0 0"/>
-      <mass value="2"/>
+      <mass value="2.057856"/>
       <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
     </inertial>
     <visual>
@@ -349,31 +325,31 @@
     </collision>
   </link>
   <gazebo reference="arm_0_link">
-    <material value="IPA/Black"/>
+    <material value="PR2/Red"/>
     <turnGravityOff>false</turnGravityOff>
   </gazebo>
   <gazebo reference="arm_1_link">
-    <material value="IPA/Orange"/>
+    <material value="PR2/Blue"/>
     <turnGravityOff>false</turnGravityOff>
   </gazebo>
   <gazebo reference="arm_2_link">
-    <material value="IPA/Black"/>
+    <material value="PR2/Red"/>
     <turnGravityOff>false</turnGravityOff>
   </gazebo>
   <gazebo reference="arm_3_link">
-    <material value="IPA/Orange"/>
+    <material value="PR2/Blue"/>
     <turnGravityOff>false</turnGravityOff>
   </gazebo>
   <gazebo reference="arm_4_link">
-    <material value="IPA/Black"/>
+    <material value="PR2/Red"/>
     <turnGravityOff>false</turnGravityOff>
   </gazebo>
   <gazebo reference="arm_5_link">
-    <material value="IPA/Orange"/>
+    <material value="PR2/Blue"/>
     <turnGravityOff>false</turnGravityOff>
   </gazebo>
   <gazebo reference="arm_6_link">
-    <material value="IPA/Black"/>
+    <material value="PR2/Red"/>
     <turnGravityOff>false</turnGravityOff>
   </gazebo>
   <transmission name="arm_1_trans" type="pr2_mechanism_model/SimpleTransmission">
