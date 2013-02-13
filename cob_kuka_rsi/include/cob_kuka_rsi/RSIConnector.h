@@ -28,6 +28,8 @@ class RSIConnector {
 public:
 	/* Data formats */
 	struct RobotPosition {
+			RobotPosition() :
+			A1(0.0f), A2(0.0f), A3(0.0f), A4(0.0f), A5(0.0f), A6(0.0f) {}
 		float A1;
 		float A2;
 		float A3;
@@ -36,7 +38,10 @@ public:
 		float A6;
 		int timestamp;
 	};
+	
 	struct RobotCorrection {
+		RobotCorrection() :
+	dX(0.0f), dY(0.0f), dZ(0.0f), dA(0.0f), dB(0.0f), dC(0.0f) {}
 		float dX;
 		float dY;
 		float dZ;
@@ -47,8 +52,7 @@ public:
 
 	struct AxisCorrection {
 		AxisCorrection() :
-			dA1(0.0f), dA2(0.0f), dA3(0.0f), dA4(0.0f), dA5(0.0f), dA6(0.0f) {
-		}
+			dA1(0.0f), dA2(0.0f), dA3(0.0f), dA4(0.0f), dA5(0.0f), dA6(0.0f) {}
 		float dA1;
 		float dA2;
 		float dA3;
@@ -58,8 +62,9 @@ public:
 	};
 
 public:
-	RSIConnector(std::string ip, int port, bool correctAxis = true);
+	RSIConnector(bool correctAxis = true);
 	~RSIConnector(void);
+	int connect(std::string own_ip, int udp_port);
 	void start();
 	void stop();
 
@@ -76,6 +81,7 @@ private:
 private:
 	boost::asio::io_service _io_service;
 	udp::socket* _socket;
+	bool _isConnected;
 
 	void work();
 	void parseXML();

@@ -1,27 +1,29 @@
 #include "cob_kuka_rsi/RSIConnector.h"
 
-RSIConnector::RSIConnector(std::string own_ip, int udp_port,
-		bool isCorrectingAxes) {
-	memset(&_robPosG, 0, sizeof(_robPosG));
-	memset(&_RKorr, 0, sizeof(_RKorr));
-	memset(&_AKorr, 0, sizeof(_AKorr));
+RSIConnector::RSIConnector(bool isCorrectingAxes) 
+	: _worker(NULL),
+	_run(false),
+	_isConnected(false)
+{
 	_correctAxis = isCorrectingAxes;
-
-	boost::system::error_code error;
-	_socket = new udp::socket(_io_service);
-	_socket->open(udp::v4());
-	_socket->bind(udp::endpoint(boost::asio::ip::address::from_string(own_ip),
-			udp_port), error);
-	if (error) {
-		std::cerr << "Error while binding socket: " << error.message()
-				<< std::endl;
-	}
-	_run = false;
 }
 
 RSIConnector::~RSIConnector(void) {
 }
 
+int RSIConnector::connect(std::string own_ip, int udp_port)
+{
+	_isConnected = true;
+	boost::system::error_code error;
+	_socket = new udp::socket(_io_service);
+	_socket->open(udp::v4());
+	_socket->bind(udp::endpoint(boost::asio::ip::address::from_string(own_ip), udp_port), error);
+	if (error) {
+		_isConnected = false;
+		std::cerr << "Error while binding socket: " << error.message() << std::endl;
+	}
+	return error.value();
+}
 /* Data Parser */
 void RSIConnector::parseXML() {
 
@@ -32,7 +34,9 @@ void RSIConnector::parseXML() {
 	try {
 		_mutexStringParser.lock();
 		RobotPosition robPos;
-		std::cout << "Hello" << _dataFromRobot.c_str() << std::endl;
+#ifdef PARSE_INFORMATION
+		std::cout << _dataFromRobot.c_str() << std::endl;
+#endif
 		sscanf(
 				_dataFromRobot.c_str(),
 				"<Rob Type=\"KUKA\"><AIPos A1=\"%f\" A2=\"%f\" A3=\"%f\" A4=\"%f\" A5=\"%f\" A6=\"%f\"/><IPOC>%d</IPOC></Rob>",
@@ -45,9 +49,10 @@ void RSIConnector::parseXML() {
 #ifdef PARSE_INFORMATION
 		std::cout << "IPOC: " << robPos.timestamp << "\tA1: " << robPos.A1 << " A2: " << robPos.A2 << " A3: " << robPos.A3 << " A4: " << robPos.A4 << " A5: " << robPos.A5 << " A6: " << robPos.A6 << std::endl;
 #endif
-	} catch (std::exception e) {
-		std::cerr << "Error while reading xml: " << e.what() << std::endl;
-		getchar();
+	} 
+	catch (std::exception e)
+	{
+		std::cerr << "Error while parsing: " << e.what() << std::endl;
 	}
 
 #ifdef TIMING
@@ -63,19 +68,21 @@ std::string RSIConnector::extractIPOC(const std::string& receive) {
 	return Ipocount;
 }
 
-void RSIConnector::work() {
-	RobotPosition robPos = { 0 };
+void RSIConnector::work() 
+{
 	_ipoCount = 0;
 
-	while (_run) {
-		try {
+	while (_run)
+	{
+		try 
+		{
 			boost::array<char, 1024> recv_buf;
 			udp::endpoint remote_endpoint;
 			boost::system::error_code error;
 
-			// Get Correction before time critical receiption of message by KUKA
+			// Get Correction before time critical reception of message by KUKA
 			AxisCorrection axCor;
-			RobotCorrection robCor = { 0 };
+			RobotCorrection robCor;
 			if (_correctAxis) {
 				axCor = GetAxisCorrection();
 			} else {
@@ -83,7 +90,6 @@ void RSIConnector::work() {
 			}
 
 			//Receive message by KUKA RSI
-			std::cout << "H" << std::endl;
 			std::ostringstream conv;
 			_socket->receive_from(boost::asio::buffer(recv_buf),
 					remote_endpoint, 0, error);
@@ -131,9 +137,9 @@ void RSIConnector::work() {
 			//std::cout << "Sent Message: " << message << std::endl;
 			conv.clear();
 			messageStream.clear();
-		} catch (std::exception ex) {
-			std::cerr << "Error during Socket Communication: " << ex.what()
-					<< std::endl;
+		} catch (std::exception ex)
+		{
+			std::cerr << "Error during Socket Communication: " << ex.what() << std::endl;
 		}
 	}
 }
@@ -144,9 +150,18 @@ void RSIConnector::start() {
 }
 
 void RSIConnector::stop() {
-	_run = false;
-	_socket->close();
-	_worker->join();
+	if (_worker != NULL)
+	{
+		_run = false;
+		_worker->join();
+		delete _worker;
+		_worker = NULL;
+	}
+
+	if (_isConnected)
+	{
+		_socket->close();
+	}
 }
 
 RSIConnector::RobotPosition RSIConnector::GetRobPos() {
@@ -174,7 +189,7 @@ int RSIConnector::GetIpoCount() {
 }
 
 RSIConnector::RobotCorrection RSIConnector::GetRobCorrection() {
-	RobotCorrection robCor = { 0 };
+	RobotCorrection robCor;
 	_mutexRobCor.lock();
 	robCor = _RKorr;
 	_mutexRobCor.unlock();
