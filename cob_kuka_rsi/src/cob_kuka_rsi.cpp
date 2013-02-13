@@ -78,6 +78,8 @@
 #define RAD_TO_DEG(a) ((a)*180.0/M_PI)
 #define DEG_TO_RAD(a) ((a)/180.0*M_PI)
 
+#define MAX_VEL 0.1 // deg/IPOC
+
 // ROS service includes
 #include <cob_srvs/Trigger.h>
 #include <cob_srvs/SetOperationMode.h>
@@ -142,7 +144,7 @@ public:
 			n_.shutdown();
 		}
 
-		rsi_ctrl_ = new RSIConnector(ip_, port_, true);
+		rsi_ctrl_ = new RSIConnector(true);
 
 		/// implementation of topics to publish
 		topicPub_JointState_ = n_.advertise<sensor_msgs::JointState> (
@@ -190,6 +192,25 @@ public:
 		ROS_INFO("RSI closed!");
 	}
 
+	float saturate(float input, float min, float max)
+	{
+		if ((max < min) || (min > max))
+		{
+			ROS_WARN("Output value saturation seems erroneous: min: %f, max: %f", min, max);
+		}
+
+		float output = input;
+		if (output > max) 
+		{
+			output = max;
+		} 
+		else if (output < min) 
+		{
+			output = min;
+		}
+		return output;
+	}
+
 	/*!
 	 * \brief Executes the callback from the command_vel topic.
 	 *
@@ -207,52 +228,24 @@ public:
 		/// command velocities to RSI
 		RSIConnector::AxisCorrection cor;
 
-		// TODO: clean this up
-#define MAX_VEL 0.1
-
+		// mapping in structure to be sent
 		cor.dA1 = RAD_TO_DEG(msg->velocities[0].value) / IPOC_HZ;
-		if (cor.dA1 > MAX_VEL) {
-			cor.dA1 = MAX_VEL;
-		} else if (cor.dA1 < -MAX_VEL) {
-			cor.dA1 = -MAX_VEL;
-		}
-
 		cor.dA2 = RAD_TO_DEG(msg->velocities[1].value) / IPOC_HZ;
-		if (cor.dA2 > MAX_VEL) {
-			cor.dA2 = MAX_VEL;
-		} else if (cor.dA2 < -MAX_VEL) {
-			cor.dA2 = -MAX_VEL;
-		}
-
 		cor.dA3 = RAD_TO_DEG(msg->velocities[2].value) / IPOC_HZ;
-		if (cor.dA3 > MAX_VEL) {
-			cor.dA3 = MAX_VEL;
-		} else if (cor.dA3 < -MAX_VEL) {
-			cor.dA3 = -MAX_VEL;
-		}
-
 		cor.dA4 = RAD_TO_DEG(msg->velocities[3].value) / IPOC_HZ;
-		if (cor.dA4 > MAX_VEL) {
-			cor.dA4 = MAX_VEL;
-		} else if (cor.dA4 < -MAX_VEL) {
-			cor.dA4 = -MAX_VEL;
-		}
-
 		cor.dA5 = RAD_TO_DEG(msg->velocities[4].value) / IPOC_HZ;
-		if (cor.dA5 > MAX_VEL) {
-			cor.dA5 = MAX_VEL;
-		} else if (cor.dA5 < -MAX_VEL) {
-			cor.dA5 = -MAX_VEL;
-		}
-
 		cor.dA6 = RAD_TO_DEG(msg->velocities[5].value) / IPOC_HZ;
-		if (cor.dA6 > MAX_VEL) {
-			cor.dA6 = MAX_VEL;
-		} else if (cor.dA6 < -MAX_VEL) {
-			cor.dA6 = -MAX_VEL;
-		}
+
+		// Saturation for safety
+		cor.dA1 = saturate(cor.dA1, -MAX_VEL, MAX_VEL);
+		cor.dA2 = saturate(cor.dA2, -MAX_VEL, MAX_VEL);
+		cor.dA3 = saturate(cor.dA3, -MAX_VEL, MAX_VEL);
+		cor.dA4 = saturate(cor.dA4, -MAX_VEL, MAX_VEL);
+		cor.dA5 = saturate(cor.dA5, -MAX_VEL, MAX_VEL);
+		cor.dA6 = saturate(cor.dA6, -MAX_VEL, MAX_VEL);
 
 		rsi_ctrl_->SetAxisCorrection(cor);
+
 		// TODO
 		// set error_
 	}
@@ -266,10 +259,18 @@ public:
 	 */
 	bool srvCallback_Init(cob_srvs::Trigger::Request &req,
 			cob_srvs::Trigger::Response &res) {
-		if (!initialized_) {
+		if (!initialized_)
+		{
 			ROS_INFO("Initializing RSI...");
 
-			rsi_ctrl_->start(); // TODO get feedback from RSI if init is successful or not
+			if(!rsi_ctrl_->connect(ip_, port_))
+			{
+				res.success.data = false;
+				res.error_message.data = "UDP Connection failed (RSI Init)";
+				return false;
+			}
+
+			rsi_ctrl_->start(); 
 			initialized_ = true;
 			res.success.data = true;
 			res.error_message.data = "RSI initialized successfully";
