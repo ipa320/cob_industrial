@@ -1,0 +1,4 @@
+<launch>
+    <param name="robot_description" textfile="$(find cob_silia)/urdf/silia.urdf" />
+    <rosparam command="load" ns="robot_description_planning" file="$(find silia_arm_navigation)/config/silia_planning_description.yaml" />
+</launch>
