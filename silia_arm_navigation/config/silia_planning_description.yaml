@@ -1,0 +1,41 @@
+multi_dof_joints:
+  - name: world_joint
+    type: Floating
+    parent_frame_id: base_link
+    child_frame_id: base_link
+groups:
+  - name: manipulator
+    base_link: base_link
+    tip_link: arm_6_link
+default_collision_operations:
+  - object1: base_link
+    object2: arm_0_link
+    operation: disable  # Adjacent in collision
+  -
+    object1: arm_0_link
+    object2: arm_1_link
+    operation: disable  # Adjacent in collision
+  -
+    object1: arm_1_link
+    object2: arm_2_link
+    operation: disable  # Adjacent in collision
+  -
+    object1: arm_2_link
+    object2: arm_3_link
+    operation: disable  # Adjacent in collision
+  -
+    object1: arm_3_link
+    object2: arm_4_link
+    operation: disable  # Adjacent in collision
+  -
+    object1: arm_4_link
+    object2: arm_5_link
+    operation: disable  # Adjacent in collision
+  -
+    object1: arm_5_link
+    object2: arm_6_link
+    operation: disable  # Adjacent in collision
+  -
+    object1: base_link
+    object2: stack_link
+    operation: disable  # Adjacent in collision
