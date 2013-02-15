@@ -28,6 +28,7 @@ public:
 		SwitchFromAtoB = 30, SwitchFromBtoA = 40, FlushBuffer = 50, EchoTest = 66, 
 		MovePTP_AXIS = 100, 
 		MoveLIN_FRAME = 201,
+		SetIo = 300,
 		test1 = 111, test2 = 112, test3= 113,
 		EmptySlot = -1,
 		Pause = 0,
@@ -111,6 +112,7 @@ public:
 	void pauseMsg(int msgID);
 	void resumeMsg(int msgID);
 
+	void setIo(int msgID, int ioNr, bool newState);
 	void movePTP(int msgID, KukaAxis axis, float vel);
 	void movePTP(int msgID, float a1, float a2, float a3, float a4, float a5, float a6, float vel);
 	void moveLIN(int msgID, KukaFrame frame, float vel);

@@ -12,6 +12,8 @@
   	<depend package="sensor_msgs"/>
   /* protected region additional manifest statements on begin */
   <depend package="cob_srvs"/>
+  <depend package="actionlib"/>
+  <depend package="brics_showcase_industry_interfaces"/>
   <rosdep name="libpoco-dev"/>
   /* protected region additional manifest statements end */
   

@@ -5,13 +5,16 @@
 #include <cob_srvs/Trigger.h>
 #include <cob_srvs/Trigger.h>
 #include <cob_kuka_xmlkrc/KukaEthernetClient.h>
+#include <brics_showcase_industry_interfaces/MoveArmCartAction.h>
 
 /* protected region user include files on begin */
 int currentMsgID;
 	clock_t start, finish;
+   int running; 
    void testCallback(int msgID)
     {
-    	std::cout << "Called back with MsgID: " << msgID << std::endl;
+        running = 0;
+    	std::cout << "\n\n ### Called back with MsgID: " << msgID << std::endl;
     	if (msgID == currentMsgID)
     	{
     		finish = clock();
@@ -57,9 +60,10 @@ public:
     void configure(cob_kuka_xmlkrc_config config) 
     {
         /* protected region user configure on begin */
-    	std::cout << "Connecting to KUKA KRC on " << config.KRC_ip_address << ":" << config.KRC_ip_port << "\n";
+    	//std::cout << "Connecting to KUKA KRC on " << config.KRC_ip_address << ":" << config.KRC_ip_port << "\n";
+    	std::cout << "Connecting to KUKA KRC on 192.168.10.20: 49152\n";
     	//kuka_client_.Initialize("common/files/EKIServerFrame.xml", SocketAddress(config.KRC_ip_address, config.KRC_ip_port));
-    	kuka_client_.Initialize("common/files/EKIServerFrame.xml", SocketAddress("192.1.10.20", 49152));
+    	kuka_client_.Initialize("../common/files/EKIServerFrame.xml", SocketAddress("192.1.10.20", 49152));
     	kuka_client_.setCallbackFcn(testCallback);
 
     	//actual moving the robot
@@ -77,7 +81,7 @@ public:
     	//only do this if the robot is not moving
     	/*std::cout << "Asking for current position\n";
     	kuka_client_.addMessage(currentMsgID, SubID::EchoTest);
-    	sleep(2.0);
+    	sleep(3.0);
     	KukaFrame currentframe = kuka_client_.getCurrentFrame();
     	std::cout << "hurray " << currentframe.toString() << "\n";
     	data.out_cart_pose.pose.position.x = currentframe.a[0]/1000;
@@ -98,10 +102,32 @@ public:
 	bool callback_MoveLin_BL(cob_srvs::Trigger::Request  &req, cob_srvs::Trigger::Response &res , cob_kuka_xmlkrc_config config)
 	{
 		/* protected region user implementation of service callback for MoveLin_BL on begin */
-		kuka_client_.moveLIN(5, KukaFrame(735,177,443,170,1,179), 0.5);
+        printf("Sending command");
+		kuka_client_.moveLIN(5, KukaFrame(0,-700,443,170,1,179), 0.2);
+        printf("Function returned");
+        //kuka_client_.setIo(8, 0, true);
 		/* protected region user implementation of service callback for MoveLin_BL end */
 		return true;
 	}
+
+    void callback_MoveArmCartAction(const brics_showcase_industry_interfaces::MoveArmCartGoalConstPtr &goal, actionlib::SimpleActionServer<brics_showcase_industry_interfaces::MoveArmCartAction> *as_)
+    {
+        ROS_INFO("Executing, creating MoveArmCartAction with %f %f %f", goal->pose_goal.pose.position.x, goal->pose_goal.pose.position.y, goal->pose_goal.pose.position.z);   
+        running = 1;
+        currentMsgID = 5;
+        start = clock();
+        kuka_client_.moveLIN(5, KukaFrame(goal->pose_goal.pose.position.x*1000,goal->pose_goal.pose.position.y*1000,goal->pose_goal.pose.position.z*1000,170,1,179), 0.2);
+        ROS_INFO("Succeeded");
+        while(running == 1)
+        {
+            printf("waiting for callback");
+            sleep(1);
+        }
+        // set the action state to succeeded
+        brics_showcase_industry_interfaces::MoveArmCartResult result_;
+        result_.successful = 1;
+        as_->setSucceeded(result_);   
+    }
     
     /* protected region user additional functions on begin */
 	/* protected region user additional functions end */

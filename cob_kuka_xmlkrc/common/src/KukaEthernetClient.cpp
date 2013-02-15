@@ -518,6 +518,12 @@ void KukaEthernetClient::addMessage(int msgID, SubID::subIDs subID, bool flush)
 
 //******************************************************************************//
 
+void KukaEthernetClient::setIo(int msgID, int ioNr, bool newState)
+{
+    int intState = newState?1:0;
+    addMessage(msgID, SubID::SetIo, ioNr, intState, false);
+}
+
 void KukaEthernetClient::movePTP(int msgID, float a1, float a2, float a3, float a4, float a5, float a6, float vel)
 {
 	KukaAxis axis(a1, a2, a3, a4, a5, a6); 

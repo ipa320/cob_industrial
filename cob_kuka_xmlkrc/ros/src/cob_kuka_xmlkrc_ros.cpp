@@ -8,6 +8,8 @@
 #include <geometry_msgs/PoseStamped.h>
 #include <cob_srvs/Trigger.h>
 #include <cob_srvs/Trigger.h>
+#include <actionlib/server/simple_action_server.h>
+#include <brics_showcase_industry_interfaces/MoveArmCartAction.h>
 
 
 
@@ -30,14 +32,16 @@ class cob_kuka_xmlkrc_ros
 	ros::ServiceServer Init_;
 	ros::ServiceServer MoveLin_BL_;
         
+        actionlib::SimpleActionServer<brics_showcase_industry_interfaces::MoveArmCartAction> as_; 
  
         cob_kuka_xmlkrc_data component_data_;
         cob_kuka_xmlkrc_config component_config_;
         cob_kuka_xmlkrc_impl component_implementation_;
 
         cob_kuka_xmlkrc_ros()
+        	:as_(n_, "MoveArmCart", boost::bind(&cob_kuka_xmlkrc_impl::callback_MoveArmCartAction, &component_implementation_, _1, &as_), false)
         {
-       	
+       		as_.start();
   			f = boost::bind(&cob_kuka_xmlkrc_ros::configure_callback, this, _1, _2);
   			server.setCallback(f);
         	
